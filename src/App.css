@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+:root {
+  --bg-grey-100: rgb(145, 145, 145);
+}
+
+a,
+a:hover,
+a:active {
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+  color: inherit;
+}
+
+button,
+input {
+  border: none;
+}
+
+::placeholder {
+  color: #bbb8b8;
+}
+
+.MainApp {
+  display: flex;
+}

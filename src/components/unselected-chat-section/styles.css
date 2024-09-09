@@ -1,0 +1,44 @@
+.chatSection-wrapper{
+    flex: 1 1 70%;
+    background-color: #222e35;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    border-left: 1px solid rgba(134, 150, 160, .15);
+}
+.chatSection-wrapper img{
+    margin-bottom: 20px;
+}
+.whatsAppWebDescriptionWrapper h2{
+    color: rgba(233, 237, 239, .88);
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+.whatsAppWebDescriptionWrapper p{
+    color: #aebac1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    max-width: 500px;
+    line-height: 24px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+.bottomContentWrapper{
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    line-height: 20px;
+    color: #667781;
+}
