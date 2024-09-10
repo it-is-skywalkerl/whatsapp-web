@@ -1,21 +1,25 @@
 import { useState } from "react";
-import MessageHeader from "./message-header/MessageHeader";
+import SelectedChatHeader from "./selected-chat-header/SelectedChatHeader";
 import MessageList from "./message-list/MessageList";
 import SendMessageBox from "./send-message-box/SendMessageBox";
 import "./styles.css";
 
-function ChatRoom({ selectedUser }: {
+function SelectedChat({
+  selectedUser,
+}: {
   selectedUser: {
     id: string;
     name: string;
     profileImg: string;
-  }
+  };
 }) {
-  const [messages, setMessages] = useState<{[key: string]: {text: string, timeStamp:string}[]}>({});
+  const [messages, setMessages] = useState<{
+    [key: string]: { text: string; timeStamp: string }[];
+  }>({});
   return (
     <div className="ChatSection">
       <div className="BackgroundImage"></div>
-      <MessageHeader selectedUser={selectedUser} />
+      <SelectedChatHeader selectedUser={selectedUser} />
       <MessageList
         selectedUser={selectedUser}
         messages={messages}
@@ -30,4 +34,4 @@ function ChatRoom({ selectedUser }: {
   );
 }
 
-export default ChatRoom;
+export default SelectedChat;
