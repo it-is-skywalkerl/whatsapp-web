@@ -14,7 +14,7 @@ function Profile() {
     <div>
       <div className="ProfileOuter">
         <div className="ProfileImage">
-          <img src="/src/assets/images/profile.png" alt="" />
+          <img src="/src/assets/images/profile.jpeg" alt="" />
         </div>
         <div className="ProfileOptions">
           <DarkModeIcon />
