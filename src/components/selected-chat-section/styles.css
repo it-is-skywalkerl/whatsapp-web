@@ -2,7 +2,7 @@
   flex: 1 1 70%;
   position: relative;
   background-color: #0b141a;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
