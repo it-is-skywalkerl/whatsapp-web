@@ -1,4 +1,6 @@
-.MessageList {
+.MessagesSection {
+  display: flex;
+  flex-direction: column;
   position: relative;
   overflow: hidden scroll;
   padding: 20px 5% 2pc;
@@ -16,28 +18,43 @@
   line-height: 20px;
   z-index: 9;
 }
+.MessageList {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  flex-grow: 1;
+}
 .Message {
   z-index: 9;
   display: flex;
   flex-direction: column;
   margin-bottom: 12px;
   position: relative;
+  max-width: 400px;
+  align-self: end;
+}
+
+.DeleteDiv {
+  transition: opacity 0.5s linear;
+  position: absolute;
+  top: -14px;
+  right: -2px;
+  opacity: 0;
+  z-index: 10;
+}
+
+.Message:hover .DeleteDiv {
+  opacity: 1;
 }
 
 .DeleteButton {
-  align-self: flex-end;
-  background-color: #dc3546;
-  color: white;
-  padding: 2px 3px 4px 5px;
   border-radius: 5px;
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.5s linear;
-  margin-right: 2px;
+  background-color: gray;
+  font-size: 0.7em;
+  padding: 1px 1px 1px 1px;
 }
-.Message:hover .DeleteButton {
-  opacity: 1;
-}
+
 .MessageText {
   background: #005c4b;
   align-self: flex-end;
@@ -45,27 +62,19 @@
   margin-bottom: 12px;
   font-size: 0.85rem;
   color: rgba(241, 241, 242, 0.88);
-  width: fit-content;
   max-width: 95%;
-  line-height: 22px;
+  min-width: 80px;
   border-radius: 5px;
   position: relative;
-  white-space: pre-line;
   display: flex;
+  justify-content: space-between;
 }
-.Gap {
-  width: 55px;
-  display: inline-block;
-  height: 3px;
-  background: transparent;
+.messageText {
+  max-width: 85%;
+  word-wrap: break-word;
 }
 .TimeStamp {
-  position: absolute;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  right: 7px;
-  bottom: 3px;
+  align-self: end;
   color: rgb(166, 168, 170);
   font-size: 0.7rem;
   font-weight: 500;
