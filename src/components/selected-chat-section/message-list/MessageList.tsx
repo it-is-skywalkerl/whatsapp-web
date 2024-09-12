@@ -4,20 +4,17 @@ import "./styles.css";
 function MessageList({
   selectedUser,
   messages,
-  setMessages,
+  onAction,
 }: {
   selectedUser: User;
   messages: AllUserMessages;
-  setMessages: React.Dispatch<React.SetStateAction<AllUserMessages>>;
+  onAction: (
+    actionType: "sendMessage" | "deleteMessage",
+    payload: string
+  ) => void;
 }) {
   function deleteMessage(event: React.MouseEvent<HTMLButtonElement>) {
-    const selectedUserMessageList = messages[selectedUser.id].filter(
-      (message: UserMessage) => message.timeStamp !== event.target.id
-    );
-    setMessages({
-      ...messages,
-      [selectedUser.id]: selectedUserMessageList,
-    });
+    onAction("deleteMessage", event.target.id);
   }
 
   return (

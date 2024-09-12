@@ -1,32 +1,19 @@
 import { useState } from "react";
 import { AttachmentIcon, SendButtonIcon } from "../../../assets/icons/Icons";
 import "./styles.css";
-import { User, UserMessage, AllUserMessages } from "@/types/common-types";
 
 function SendMessageBox({
-  selectedUser,
-  messages,
-  setMessages,
+  onAction,
 }: {
-  selectedUser: User;
-  messages: AllUserMessages;
-  setMessages: React.Dispatch<React.SetStateAction<AllUserMessages>>;
+  onAction: (
+    actionType: "sendMessage" | "deleteMessage",
+    payload: string
+  ) => void;
 }) {
   const [inputMessage, setInputMessage] = useState<string>("");
 
   function sendMessage() {
-    if (inputMessage.length > 0) {
-      const timeStamp = new Date().toTimeString().split(" ")[0];
-      const selectedUserMessageList: UserMessage[] =
-        messages[selectedUser.id] ?? [];
-      setMessages({
-        ...messages,
-        [selectedUser.id]: [
-          ...selectedUserMessageList,
-          { text: inputMessage, timeStamp: timeStamp },
-        ],
-      });
-    }
+    onAction("sendMessage", inputMessage);
     setInputMessage("");
   }
 
