@@ -1,17 +1,14 @@
 import { useState } from "react";
 import { AttachmentIcon, SendButtonIcon } from "../../../assets/icons/Icons";
 import "./styles.css";
+import { User } from "@/types/common-types";
 
 function SendMessageBox({
   selectedUser,
   messages,
   setMessages,
 }: {
-  selectedUser: {
-    id: string;
-    name: string;
-    profileImg: string;
-  };
+  selectedUser: User;
   messages: {
     [key: string]: {
       text: string;

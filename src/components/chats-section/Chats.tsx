@@ -3,23 +3,14 @@ import "./styles.css";
 import Profile from "./profile/Profile";
 import SearchField from "./search-field/SearchField";
 import Contacts from "./contacts/Contacts";
+import { User } from "@/types/common-types";
 
 function Chats({
   selectedUser,
   setSelectedUser,
 }: {
-  selectedUser: {
-    id: string;
-    name: string;
-    profileImg: string;
-  } | null;
-  setSelectedUser: React.Dispatch<
-    React.SetStateAction<{
-      id: string;
-      name: string;
-      profileImg: string;
-    } | null>
-  >;
+  selectedUser: User | null;
+  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
 }) {
   return (
     <div className="SideBar">

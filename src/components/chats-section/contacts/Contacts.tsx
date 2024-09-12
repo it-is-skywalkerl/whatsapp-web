@@ -1,17 +1,13 @@
+import { User } from "@/types/common-types";
 import { CONNECTIONS } from "../../../constant/connections";
 import "./styles.css";
 
-function Contacts({ selectedUser, setSelectedUser }: {
-  selectedUser: {
-    id: string;
-    name: string;
-    profileImg: string;
-  } | null,
-  setSelectedUser: React.Dispatch<React.SetStateAction<{
-    id: string;
-    name: string;
-    profileImg: string;
-  } | null>>
+function Contacts({
+  selectedUser,
+  setSelectedUser,
+}: {
+  selectedUser: User | null;
+  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
 }) {
   function handleClick(event: React.MouseEvent<HTMLDivElement>) {
     const USER = CONNECTIONS.find(
@@ -27,7 +23,11 @@ function Contacts({ selectedUser, setSelectedUser }: {
         <div
           key={contact.id}
           id={contact.id}
-          className={selectedUser?.id == contact.id ? 'Contact SelectedContact' : 'Contact'}
+          className={
+            selectedUser?.id == contact.id
+              ? "Contact SelectedContact"
+              : "Contact"
+          }
           onClick={handleClick}
         >
           <div className="ProfilePhoto">

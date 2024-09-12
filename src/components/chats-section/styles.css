@@ -1,7 +1,7 @@
 .SideBar {
-    flex: 1 1 30%;
-    background: #111b21;
-    overflow-y: scroll;
-    min-width: 20rem;
-    min-height: 100vh;
+  flex: 1 1 30%;
+  background: #111b21;
+  overflow-y: scroll;
+  min-width: 20rem;
+  min-height: 100vh;
 }

@@ -3,13 +3,10 @@ import Chats from "./components/chats-section/Chats";
 import SelectedChat from "./components/selected-chat-section/SelectedChat";
 import DefaultUnselectedChatDisplay from "./components/default-unselected-chat-display/DefaultUnselectedChatDisplay";
 import { useState } from "react";
+import { User } from "./types/common-types";
 
 function App() {
-  const [selectedUser, setSelectedUser] = useState<{
-    id: string;
-    name: string;
-    profileImg: string;
-  } | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   return (
     <div className="MainApp">
       <Chats selectedUser={selectedUser} setSelectedUser={setSelectedUser} />

@@ -1,3 +1,4 @@
+import { User } from "@/types/common-types";
 import "./styles.css";
 
 function MessageList({
@@ -5,11 +6,7 @@ function MessageList({
   messages,
   setMessages,
 }: {
-  selectedUser: {
-    id: string;
-    name: string;
-    profileImg: string;
-  };
+  selectedUser: User;
   messages: {
     [key: string]: {
       text: string;

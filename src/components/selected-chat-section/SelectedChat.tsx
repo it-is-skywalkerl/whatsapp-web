@@ -3,16 +3,9 @@ import SelectedChatHeader from "./selected-chat-header/SelectedChatHeader";
 import MessageList from "./message-list/MessageList";
 import SendMessageBox from "./send-message-box/SendMessageBox";
 import "./styles.css";
+import { User } from "@/types/common-types";
 
-function SelectedChat({
-  selectedUser,
-}: {
-  selectedUser: {
-    id: string;
-    name: string;
-    profileImg: string;
-  };
-}) {
+function SelectedChat({ selectedUser }: { selectedUser: User }) {
   const [messages, setMessages] = useState<{
     [key: string]: { text: string; timeStamp: string }[];
   }>({});

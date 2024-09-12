@@ -1,14 +1,7 @@
+import { User } from "@/types/common-types";
 import "./styles.css";
 
-function SelectedChatHeader({
-  selectedUser,
-}: {
-  selectedUser: {
-    id: string;
-    name: string;
-    profileImg: string;
-  };
-}) {
+function SelectedChatHeader({ selectedUser }: { selectedUser: User }) {
   return (
     <div className="MessageHeader">
       <div className="ProfileImage">
