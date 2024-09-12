@@ -1,4 +1,4 @@
-.chatSection-wrapper {
+.DefaultUnselectedChatDisplay {
   flex: 1 1 70%;
   background-color: #222e35;
   display: flex;
@@ -9,7 +9,7 @@
   position: relative;
   border-left: 1px solid rgba(134, 150, 160, 0.15);
 }
-.chatSection-wrapper img {
+.DefaultUnselectedChatDisplay img {
   margin-bottom: 20px;
 }
 .whatsAppWebDescriptionWrapper h2 {

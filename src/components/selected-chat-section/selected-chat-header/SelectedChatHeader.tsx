@@ -3,7 +3,7 @@ import "./styles.css";
 
 function SelectedChatHeader({ selectedUser }: { selectedUser: User }) {
   return (
-    <div className="MessageHeader">
+    <div className="SelectedChatHeader">
       <div className="ProfileImage">
         <img src={selectedUser.profileImg} alt="" />
       </div>

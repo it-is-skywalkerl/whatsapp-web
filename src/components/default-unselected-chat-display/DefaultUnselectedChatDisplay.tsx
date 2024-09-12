@@ -2,7 +2,7 @@
 import "./styles.css";
 function DefaultUnselectedChatDisplay() {
   return (
-    <div className="chatSection-wrapper">
+    <div className="DefaultUnselectedChatDisplay">
       <img src="/src/assets/images/default-unselected-chat.png" alt="" />
       <div className="whatsAppWebDescriptionWrapper">
         <h2>WhatsApp Web</h2>

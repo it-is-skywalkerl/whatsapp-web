@@ -17,7 +17,7 @@ function SelectedChat({
   ) => void;
 }) {
   return (
-    <div className="ChatSection">
+    <div className="SelectedChatSection">
       <div className="BackgroundImage"></div>
       <SelectedChatHeader selectedUser={selectedUser} />
       <MessageList

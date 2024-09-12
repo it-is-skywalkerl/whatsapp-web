@@ -13,7 +13,7 @@ function Chats({
   setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
 }) {
   return (
-    <div className="SideBar">
+    <div className="Chats">
       <Profile />
       <SearchField />
       <Contacts selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
