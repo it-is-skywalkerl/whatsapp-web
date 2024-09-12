@@ -5,10 +5,7 @@ import "./styles.css";
 function SendMessageBox({
   onAction,
 }: {
-  onAction: (
-    actionType: "sendMessage" | "deleteMessage",
-    payload: string
-  ) => void;
+  onAction: (actionType: "sendMessage", payload: string) => void;
 }) {
   const [inputMessage, setInputMessage] = useState<string>("");
 
