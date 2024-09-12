@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AttachmentIcon, SendButtonIcon } from "../../../assets/icons/Icons";
 import "./styles.css";
-import { User } from "@/types/common-types";
+import { User, UserMessage, AllUserMessages } from "@/types/common-types";
 
 function SendMessageBox({
   selectedUser,
@@ -9,39 +9,24 @@ function SendMessageBox({
   setMessages,
 }: {
   selectedUser: User;
-  messages: {
-    [key: string]: {
-      text: string;
-      timeStamp: string;
-    }[];
-  };
-  setMessages: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: {
-        text: string;
-        timeStamp: string;
-      }[];
-    }>
-  >;
+  messages: AllUserMessages;
+  setMessages: React.Dispatch<React.SetStateAction<AllUserMessages>>;
 }) {
   const [inputMessage, setInputMessage] = useState<string>("");
 
   function sendMessage() {
     if (inputMessage.length > 0) {
       const timeStamp = new Date().toTimeString().split(" ")[0];
-      if (Array.isArray(messages[selectedUser.id])) {
-        const newMessageArray = messages[selectedUser.id];
-        newMessageArray.push({ text: inputMessage, timeStamp });
-        const newMessages = { ...messages, [selectedUser.id]: newMessageArray };
-        setMessages(newMessages);
-      } else {
-        const newMessageArray = [];
-        newMessageArray.push({ text: inputMessage, timeStamp });
-        const newMessages = { ...messages, [selectedUser.id]: newMessageArray };
-        setMessages(newMessages);
-      }
+      const selectedUserMessageList: UserMessage[] =
+        messages[selectedUser.id] ?? [];
+      setMessages({
+        ...messages,
+        [selectedUser.id]: [
+          ...selectedUserMessageList,
+          { text: inputMessage, timeStamp: timeStamp },
+        ],
+      });
     }
-    console.log(messages);
     setInputMessage("");
   }
 

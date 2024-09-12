@@ -1,4 +1,4 @@
-import { User } from "@/types/common-types";
+import { User, UserMessage, AllUserMessages } from "@/types/common-types";
 import "./styles.css";
 
 function MessageList({
@@ -7,32 +7,17 @@ function MessageList({
   setMessages,
 }: {
   selectedUser: User;
-  messages: {
-    [key: string]: {
-      text: string;
-      timeStamp: string;
-    }[];
-  };
-  setMessages: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: {
-        text: string;
-        timeStamp: string;
-      }[];
-    }>
-  >;
+  messages: AllUserMessages;
+  setMessages: React.Dispatch<React.SetStateAction<AllUserMessages>>;
 }) {
   function deleteMessage(event: React.MouseEvent<HTMLButtonElement>) {
-    console.log(event.target);
-    const currentUserMessageList = messages[selectedUser.id].filter(
-      (message: { text: string; timeStamp: string }) =>
-        message.timeStamp !== event.target.id
+    const selectedUserMessageList = messages[selectedUser.id].filter(
+      (message: UserMessage) => message.timeStamp !== event.target.id
     );
-    const newMessage = {
+    setMessages({
       ...messages,
-      [selectedUser.id]: currentUserMessageList,
-    };
-    setMessages(newMessage);
+      [selectedUser.id]: selectedUserMessageList,
+    });
   }
 
   return (
@@ -43,26 +28,24 @@ function MessageList({
         Click to learn more.
       </p>
       <div className="MessageList">
-        {messages[selectedUser.id]?.map(
-          (message: { text: string; timeStamp: string }) => (
-            <div key={message.timeStamp} className="Message">
-              <div className="DeleteDiv">
-                <button
-                  className="DeleteButton"
-                  id={message.timeStamp}
-                  onClick={deleteMessage}
-                >
-                  Delete
-                </button>
-              </div>
-
-              <div className="MessageText">
-                <div className="messageText">{message.text}</div>
-                <div className="TimeStamp">{message.timeStamp.slice(0, 5)}</div>
-              </div>
+        {messages[selectedUser.id]?.map((message: UserMessage) => (
+          <div key={message.timeStamp} className="Message">
+            <div className="DeleteDiv">
+              <button
+                className="DeleteButton"
+                id={message.timeStamp}
+                onClick={deleteMessage}
+              >
+                Delete
+              </button>
             </div>
-          )
-        )}
+
+            <div className="MessageText">
+              <div className="messageText">{message.text}</div>
+              <div className="TimeStamp">{message.timeStamp.slice(0, 5)}</div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

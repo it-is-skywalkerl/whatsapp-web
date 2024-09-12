@@ -3,12 +3,11 @@ import SelectedChatHeader from "./selected-chat-header/SelectedChatHeader";
 import MessageList from "./message-list/MessageList";
 import SendMessageBox from "./send-message-box/SendMessageBox";
 import "./styles.css";
-import { User } from "@/types/common-types";
+import { AllUserMessages, User } from "@/types/common-types";
 
 function SelectedChat({ selectedUser }: { selectedUser: User }) {
-  const [messages, setMessages] = useState<{
-    [key: string]: { text: string; timeStamp: string }[];
-  }>({});
+  const [messages, setMessages] = useState<AllUserMessages>({});
+
   return (
     <div className="ChatSection">
       <div className="BackgroundImage"></div>
