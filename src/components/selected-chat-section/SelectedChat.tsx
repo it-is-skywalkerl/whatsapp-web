@@ -29,7 +29,7 @@ function SelectedChat({ selectedUser }: { selectedUser: User }) {
         }
         break;
 
-      case "deleteMessage":
+      case "deleteMessage": {
         const selectedUserMessageList = messages[selectedUser.id].filter(
           (message: UserMessage) => message.timeStamp !== payload
         );
@@ -37,6 +37,7 @@ function SelectedChat({ selectedUser }: { selectedUser: User }) {
           ...messages,
           [selectedUser.id]: selectedUserMessageList,
         });
+      }
         break;
 
       default:

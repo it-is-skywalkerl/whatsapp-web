@@ -14,7 +14,7 @@ function MessageList({
   ) => void;
 }) {
   function deleteMessage(event: React.MouseEvent<HTMLButtonElement>) {
-    onAction("deleteMessage", event.target.id);
+    onAction("deleteMessage", event.currentTarget.id);
   }
 
   return (
