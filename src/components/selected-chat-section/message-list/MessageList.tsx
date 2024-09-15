@@ -1,13 +1,11 @@
-import { User, UserMessage, AllUserMessages } from "@/types/common-types";
+import { UserMessage } from "@/types/common-types";
 import "./styles.css";
 
 function MessageList({
-  selectedUser,
-  messages,
+  selectedUserMessages,
   onAction,
 }: {
-  selectedUser: User;
-  messages: AllUserMessages;
+  selectedUserMessages: UserMessage[];
   onAction: (actionType: "DELETE_MESSAGE", payload: string) => void;
 }) {
   function deleteMessage(event: React.MouseEvent<HTMLButtonElement>) {
@@ -22,7 +20,7 @@ function MessageList({
         Click to learn more.
       </p>
       <div className="MessageList">
-        {messages[selectedUser.id]?.map((message: UserMessage) => (
+        {selectedUserMessages.map((message: UserMessage) => (
           <div key={message.timeStamp} className="Message">
             <div className="DeleteDiv">
               <button
