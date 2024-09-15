@@ -8,10 +8,10 @@ function MessageList({
 }: {
   selectedUser: User;
   messages: AllUserMessages;
-  onAction: (actionType: "deleteMessage", payload: string) => void;
+  onAction: (actionType: "DELETE_MESSAGE", payload: string) => void;
 }) {
   function deleteMessage(event: React.MouseEvent<HTMLButtonElement>) {
-    onAction("deleteMessage", event.currentTarget.id);
+    onAction("DELETE_MESSAGE", event.currentTarget.id);
   }
 
   return (

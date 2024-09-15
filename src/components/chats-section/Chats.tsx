@@ -7,16 +7,16 @@ import { User } from "@/types/common-types";
 
 function Chats({
   selectedUser,
-  setSelectedUser,
+  onAction,
 }: {
   selectedUser: User | null;
-  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
+  onAction: (actionType: "SELECT_USER", payload: string) => void;
 }) {
   return (
     <div className="Chats">
       <Profile />
       <SearchField />
-      <Contacts selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
+      <Contacts selectedUser={selectedUser} onAction={onAction} />
     </div>
   );
 }

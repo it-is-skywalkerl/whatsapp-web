@@ -12,7 +12,7 @@ function SelectedChat({
   selectedUser: User;
   messages: AllUserMessages;
   onAction: (
-    actionType: "sendMessage" | "deleteMessage",
+    actionType: "SEND_MESSAGE" | "DELETE_MESSAGE",
     payload: string
   ) => void;
 }) {
@@ -24,12 +24,12 @@ function SelectedChat({
         selectedUser={selectedUser}
         messages={messages}
         onAction={
-          onAction as (actionType: "deleteMessage", payload: string) => void
+          onAction as (actionType: "DELETE_MESSAGE", payload: string) => void
         }
       />
       <SendMessageBox
         onAction={
-          onAction as (actionType: "sendMessage", payload: string) => void
+          onAction as (actionType: "SEND_MESSAGE", payload: string) => void
         }
       />
     </div>

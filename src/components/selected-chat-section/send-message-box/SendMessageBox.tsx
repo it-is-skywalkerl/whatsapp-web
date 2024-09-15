@@ -5,12 +5,12 @@ import "./styles.css";
 function SendMessageBox({
   onAction,
 }: {
-  onAction: (actionType: "sendMessage", payload: string) => void;
+  onAction: (actionType: "SEND_MESSAGE", payload: string) => void;
 }) {
   const [inputMessage, setInputMessage] = useState<string>("");
 
   function sendMessage() {
-    onAction("sendMessage", inputMessage);
+    onAction("SEND_MESSAGE", inputMessage);
     setInputMessage("");
   }
 

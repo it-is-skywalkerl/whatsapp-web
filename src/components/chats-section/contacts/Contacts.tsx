@@ -4,19 +4,15 @@ import "./styles.css";
 
 function Contacts({
   selectedUser,
-  setSelectedUser,
+  onAction
 }: {
   selectedUser: User | null;
-  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
+  onAction: (actionType: "SELECT_USER", payload: string) => void;
 }) {
   function handleClick(event: React.MouseEvent<HTMLDivElement>) {
-    const USER = CONNECTIONS.find(
-      (connection) => connection.id === event.currentTarget.id
-    );
-    if (USER !== undefined) {
-      setSelectedUser(USER);
-    }
+    onAction("SELECT_USER", event.currentTarget.id);
   }
+
   return (
     <div>
       {CONNECTIONS.map((contact) => (
