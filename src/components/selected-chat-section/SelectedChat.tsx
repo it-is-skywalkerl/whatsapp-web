@@ -13,7 +13,7 @@ function SelectedChat({
   selectedUserMessages: UserMessage[];
   onAction: (
     actionType: "SEND_MESSAGE" | "DELETE_MESSAGE",
-    payload: string
+    payload: string | number
   ) => void;
 }) {
   return (
@@ -23,7 +23,7 @@ function SelectedChat({
       <MessageList
         selectedUserMessages={selectedUserMessages}
         onAction={
-          onAction as (actionType: "DELETE_MESSAGE", payload: string) => void
+          onAction as (actionType: "DELETE_MESSAGE", payload: number) => void
         }
       />
       <SendMessageBox

@@ -5,6 +5,7 @@ export interface User {
 }
 
 export interface UserMessage {
+  id: number;
   text: string;
   timeStamp: string;
 }

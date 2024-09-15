@@ -10,19 +10,23 @@ function App() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<AllUserMessages>({});
 
-  function handleMessages(actionType: "SEND_MESSAGE" | "DELETE_MESSAGE", payload: string) {
+  function handleMessages(actionType: "SEND_MESSAGE" | "DELETE_MESSAGE", payload: string | number) {
     if (selectedUser)
       switch (actionType) {
         case "SEND_MESSAGE":
+          payload = payload.toString();
           if (payload.length > 0) {
             const timeStamp = new Date().toTimeString().split(" ")[0];
             const selectedUserMessageList: UserMessage[] =
               messages[selectedUser.id] ?? [];
+            const messageId = selectedUserMessageList.length > 0
+              ? selectedUserMessageList[selectedUserMessageList.length - 1].id + 1
+              : 0;
             setMessages({
               ...messages,
               [selectedUser.id]: [
                 ...selectedUserMessageList,
-                { text: payload, timeStamp: timeStamp },
+                { id: messageId, text: payload, timeStamp: timeStamp },
               ],
             });
           }
@@ -31,7 +35,7 @@ function App() {
         case "DELETE_MESSAGE":
           {
             const selectedUserMessageList = messages[selectedUser.id].filter(
-              (message: UserMessage) => message.timeStamp !== payload
+              (message: UserMessage) => message.id !== payload
             );
             setMessages({
               ...messages,
@@ -59,7 +63,7 @@ function App() {
 
   function onAction(
     actionType: "SEND_MESSAGE" | "DELETE_MESSAGE" | "SELECT_USER",
-    payload: string
+    payload: string | number
   ) {
     switch (actionType) {
       case "SEND_MESSAGE":
@@ -71,6 +75,7 @@ function App() {
         break;
 
       case "SELECT_USER":
+        payload = payload.toString();
         handleUser(actionType, payload);
         break;
 

@@ -6,10 +6,10 @@ function MessageList({
   onAction,
 }: {
   selectedUserMessages: UserMessage[];
-  onAction: (actionType: "DELETE_MESSAGE", payload: string) => void;
+  onAction: (actionType: "DELETE_MESSAGE", payload: number) => void;
 }) {
-  function deleteMessage(event: React.MouseEvent<HTMLButtonElement>) {
-    onAction("DELETE_MESSAGE", event.currentTarget.id);
+  function deleteMessage(id: number) {
+    onAction("DELETE_MESSAGE", id);
   }
 
   return (
@@ -21,12 +21,11 @@ function MessageList({
       </p>
       <div className="MessageList">
         {selectedUserMessages?.map((message: UserMessage) => (
-          <div key={message.timeStamp} className="Message">
+          <div key={message.id} className="Message">
             <div className="DeleteDiv">
               <button
                 className="DeleteButton"
-                id={message.timeStamp}
-                onClick={deleteMessage}
+                onClick={() => deleteMessage(message.id)}
               >
                 Delete
               </button>
