@@ -85,7 +85,7 @@ function App() {
       {selectedUser ? (
         <SelectedChat
           selectedUser={selectedUser}
-          messages={messages}
+          selectedUserMessages={messages[selectedUser.id]}
           onAction={onAction}
         />
       ) : (
