@@ -39,9 +39,9 @@ function Contacts({
               <>
                 <div className="LatestMessage">
                   {messages[contact.id][messages[contact.id].length - 1].text}
-                <div className="Tooltip">
-                  {messages[contact.id][messages[contact.id].length - 1].text}
-                </div>
+                  <div className="Tooltip">
+                    {messages[contact.id][messages[contact.id].length - 1].text}
+                  </div>
                 </div>
               </>
             )}

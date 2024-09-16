@@ -126,7 +126,9 @@ function App() {
     <div className="MainApp">
       <Chats
         selectedUser={selectedUser}
+        setSelectedUser={setSelectedUser}
         messages={messages}
+        setMessages={setMessages}
         onAction={
           onAction as (actionType: "SELECT_USER", payload: string) => void
         }
