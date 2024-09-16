@@ -4,11 +4,11 @@ import SelectedChat from "./components/selected-chat-section/SelectedChat";
 import DefaultUnselectedChatDisplay from "./components/default-unselected-chat-display/DefaultUnselectedChatDisplay";
 import { useState } from "react";
 import { AllUserMessages, User, UserMessage } from "./types/common-types";
-import { CONNECTIONS } from "./constant/connections";
 
 function App() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<AllUserMessages>({});
+  const [users, setUsers] = useState<User[]>([]);
 
   function handleMessages(
     // Convert this Constants in seperate file and use them everywhere
@@ -80,9 +80,7 @@ function App() {
     switch (actionType) {
       case "SELECT_USER":
         {
-          const USER = CONNECTIONS.find(
-            (connection) => connection.id === payload
-          );
+          const USER = users.find((connection) => connection.id === payload);
           if (USER !== undefined) {
             setSelectedUser(USER);
           }
@@ -125,6 +123,8 @@ function App() {
   return (
     <div className="MainApp">
       <Chats
+        users={users}
+        setUsers={setUsers}
         selectedUser={selectedUser}
         setSelectedUser={setSelectedUser}
         messages={messages}
