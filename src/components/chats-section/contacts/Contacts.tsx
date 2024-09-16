@@ -35,11 +35,16 @@ function Contacts({
             <div className="ProfileName">
               <h2>{contact.name}</h2>
             </div>
-            <div className="LatestMessage">
-              {messages[contact.id]
-                ? messages[contact.id][messages[contact.id].length - 1].text
-                : ""}
-            </div>
+            {messages[contact.id] && (
+              <>
+                <div className="LatestMessage">
+                  {messages[contact.id][messages[contact.id].length - 1].text}
+                <div className="Tooltip">
+                  {messages[contact.id][messages[contact.id].length - 1].text}
+                </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       ))}
