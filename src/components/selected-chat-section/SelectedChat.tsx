@@ -12,14 +12,14 @@ function SelectedChat({
   selectedUser: User;
   selectedUserMessages: UserMessage[];
   onAction: (
-    actionType: "SEND_MESSAGE" | "DELETE_MESSAGE",
+    actionType: "SEND_MESSAGE" | "DELETE_MESSAGE" | "DELETE_USER",
     payload: string | number
   ) => void;
 }) {
   return (
     <div className="SelectedChatSection">
       <div className="BackgroundImage"></div>
-      <SelectedChatHeader selectedUser={selectedUser} />
+      <SelectedChatHeader selectedUser={selectedUser} onAction={onAction} />
       <MessageList
         selectedUserMessages={selectedUserMessages}
         onAction={

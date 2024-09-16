@@ -59,7 +59,6 @@ function App() {
             const selectedUserMessageList = messages[selectedUser.id].filter(
               (message: UserMessage) => message.id !== payload
             );
-            console.log(selectedUserMessageList);
             setMessages({
               ...messages,
               [selectedUser.id]: selectedUserMessageList,
@@ -70,7 +69,7 @@ function App() {
   }
 
   function handleUser(
-    actionType: "SELECT_USER" | "ADD_NEW_USER",
+    actionType: "SELECT_USER" | "ADD_NEW_USER" | "DELETE_USER",
     payload: string
   ) {
     switch (actionType) {
@@ -90,8 +89,7 @@ function App() {
           const newUser = {
             id: newUserId + "",
             name: payload,
-            profileImg:
-              "https://fastly.picsum.photos/id/297/200/300.jpg?hmac=SF0Y51mRP7i6CoLBIuliqQwDIUJNyf63_r3xhamVSLE",
+            profileImg: `https://ui-avatars.com/api/?name=${payload}`,
           };
           if (users) {
             setUsers([...users, newUser]);
@@ -100,6 +98,14 @@ function App() {
           }
           setSelectedUser(newUser);
           setMessages({ ...messages, [newUser.id]: [] });
+        }
+        break;
+
+      case "DELETE_USER":
+        if (selectedUser) {
+          delete messages[selectedUser.id];
+          setUsers(users.filter((user: User) => user !== selectedUser));
+          setSelectedUser(null);
         }
         break;
     }
@@ -111,7 +117,8 @@ function App() {
       | "EDIT_MESSAGE"
       | "DELETE_MESSAGE"
       | "SELECT_USER"
-      | "ADD_NEW_USER",
+      | "ADD_NEW_USER"
+      | "DELETE_USER",
     payload: string | number
   ) {
     switch (actionType) {
@@ -123,6 +130,7 @@ function App() {
 
       case "SELECT_USER":
       case "ADD_NEW_USER":
+      case "DELETE_USER":
         payload = payload.toString();
         handleUser(actionType, payload);
         break;
