@@ -59,6 +59,7 @@ function App() {
             const selectedUserMessageList = messages[selectedUser.id].filter(
               (message: UserMessage) => message.id !== payload
             );
+            console.log(selectedUserMessageList);
             setMessages({
               ...messages,
               [selectedUser.id]: selectedUserMessageList,
@@ -68,7 +69,10 @@ function App() {
       }
   }
 
-  function handleUser(actionType: "SELECT_USER", payload: string) {
+  function handleUser(
+    actionType: "SELECT_USER" | "ADD_NEW_USER",
+    payload: string
+  ) {
     switch (actionType) {
       case "SELECT_USER":
         {
@@ -76,6 +80,26 @@ function App() {
           if (USER !== undefined) {
             setSelectedUser(USER);
           }
+        }
+        break;
+
+      case "ADD_NEW_USER":
+        {
+          const newUserId =
+            users.length > 0 ? users[users.length - 1].id + 1 : 0;
+          const newUser = {
+            id: newUserId + "",
+            name: payload,
+            profileImg:
+              "https://fastly.picsum.photos/id/297/200/300.jpg?hmac=SF0Y51mRP7i6CoLBIuliqQwDIUJNyf63_r3xhamVSLE",
+          };
+          if (users) {
+            setUsers([...users, newUser]);
+          } else {
+            setUsers([newUser]);
+          }
+          setSelectedUser(newUser);
+          setMessages({ ...messages, [newUser.id]: [] });
         }
         break;
     }
@@ -86,23 +110,19 @@ function App() {
       | "SEND_MESSAGE"
       | "EDIT_MESSAGE"
       | "DELETE_MESSAGE"
-      | "SELECT_USER",
+      | "SELECT_USER"
+      | "ADD_NEW_USER",
     payload: string | number
   ) {
     switch (actionType) {
       case "SEND_MESSAGE":
-        handleMessages(actionType, payload);
-        break;
-
       case "EDIT_MESSAGE":
-        handleMessages(actionType, payload);
-        break;
-
       case "DELETE_MESSAGE":
         handleMessages(actionType, payload);
         break;
 
       case "SELECT_USER":
+      case "ADD_NEW_USER":
         payload = payload.toString();
         handleUser(actionType, payload);
         break;
@@ -116,13 +136,13 @@ function App() {
     <div className="MainApp">
       <Chats
         users={users}
-        setUsers={setUsers}
         selectedUser={selectedUser}
-        setSelectedUser={setSelectedUser}
         messages={messages}
-        setMessages={setMessages}
         onAction={
-          onAction as (actionType: "SELECT_USER", payload: string) => void
+          onAction as (
+            actionType: "SELECT_USER" | "ADD_NEW_USER",
+            payload: string
+          ) => void
         }
       />
       {selectedUser ? (

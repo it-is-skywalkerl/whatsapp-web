@@ -1,17 +1,10 @@
 import { useState } from "react";
 import "./styles.css";
-import { AllUserMessages, User } from "@/types/common-types";
 
 function AddContact({
-  users,
-  setUsers,
-  setSelectedUser,
+  onAction,
 }: {
-  users: User[];
-  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
-  messages: AllUserMessages;
-  setMessages: React.Dispatch<React.SetStateAction<AllUserMessages>>;
-  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
+  onAction: (actionType: "ADD_NEW_USER", payload: string) => void;
 }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [contactName, setcontactName] = useState("");
@@ -25,19 +18,7 @@ function AddContact({
   }
 
   function startNewChat() {
-    const newUserId = users.length > 0 ? users[users.length - 1].id + 1 : 0;
-    const newUser = {
-      id: newUserId + "",
-      name: contactName,
-      profileImg:
-        "https://fastly.picsum.photos/id/297/200/300.jpg?hmac=SF0Y51mRP7i6CoLBIuliqQwDIUJNyf63_r3xhamVSLE",
-    };
-    if (users) {
-      setUsers([...users, newUser]);
-    } else {
-      setUsers([newUser]);
-    }
-    setSelectedUser(newUser);
+    onAction("ADD_NEW_USER", contactName);
     setcontactName("");
     setModalOpen(false);
   }
