@@ -23,7 +23,7 @@ function SelectedChat({
       <MessageList
         selectedUserMessages={selectedUserMessages}
         onAction={
-          onAction as (actionType: "DELETE_MESSAGE", payload: number) => void
+          onAction as (actionType: "EDIT_MESSAGE" | "DELETE_MESSAGE", payload: number | [number, string]) => void
         }
       />
       <SendMessageBox

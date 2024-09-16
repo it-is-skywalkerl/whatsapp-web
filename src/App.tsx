@@ -10,7 +10,10 @@ function App() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<AllUserMessages>({});
 
-  function handleMessages(actionType: "SEND_MESSAGE" | "DELETE_MESSAGE", payload: string | number) {
+  function handleMessages(
+    actionType: "SEND_MESSAGE" | "EDIT_MESSAGE" | "DELETE_MESSAGE",
+    payload: string | number | [number, string]
+  ) {
     if (selectedUser)
       switch (actionType) {
         case "SEND_MESSAGE":
@@ -19,9 +22,11 @@ function App() {
             const timeStamp = new Date().toTimeString().split(" ")[0];
             const selectedUserMessageList: UserMessage[] =
               messages[selectedUser.id] ?? [];
-            const messageId = selectedUserMessageList.length > 0
-              ? selectedUserMessageList[selectedUserMessageList.length - 1].id + 1
-              : 0;
+            const messageId =
+              selectedUserMessageList.length > 0
+                ? selectedUserMessageList[selectedUserMessageList.length - 1]
+                    .id + 1
+                : 0;
             setMessages({
               ...messages,
               [selectedUser.id]: [
@@ -29,6 +34,23 @@ function App() {
                 { id: messageId, text: payload, timeStamp: timeStamp },
               ],
             });
+          }
+          break;
+
+        case "EDIT_MESSAGE":
+          {
+            if (Array.isArray(payload)) {
+              const selectedUserMessageList = messages[selectedUser.id].map(
+                (message: UserMessage) =>
+                  message.id === (payload as [number, string])[0]
+                    ? { ...message, text: (payload as [number, string])[1] }
+                    : message
+              );
+              setMessages({
+                ...messages,
+                [selectedUser.id]: selectedUserMessageList,
+              });
+            }
           }
           break;
 
@@ -62,11 +84,19 @@ function App() {
   }
 
   function onAction(
-    actionType: "SEND_MESSAGE" | "DELETE_MESSAGE" | "SELECT_USER",
+    actionType:
+      | "SEND_MESSAGE"
+      | "EDIT_MESSAGE"
+      | "DELETE_MESSAGE"
+      | "SELECT_USER",
     payload: string | number
   ) {
     switch (actionType) {
       case "SEND_MESSAGE":
+        handleMessages(actionType, payload);
+        break;
+
+      case "EDIT_MESSAGE":
         handleMessages(actionType, payload);
         break;
 
@@ -86,7 +116,12 @@ function App() {
 
   return (
     <div className="MainApp">
-      <Chats selectedUser={selectedUser} onAction={onAction as (actionType: "SELECT_USER", payload: string) => void} />
+      <Chats
+        selectedUser={selectedUser}
+        onAction={
+          onAction as (actionType: "SELECT_USER", payload: string) => void
+        }
+      />
       {selectedUser ? (
         <SelectedChat
           selectedUser={selectedUser}
