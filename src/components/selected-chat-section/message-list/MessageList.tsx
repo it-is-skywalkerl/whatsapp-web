@@ -7,28 +7,32 @@ function MessageList({
   onAction,
 }: {
   selectedUserMessages: UserMessage[];
-  onAction: (actionType: "EDIT_MESSAGE" | "DELETE_MESSAGE", payload: number | [number, string]) => void;
+  onAction: (
+    actionType: "EDIT_MESSAGE" | "DELETE_MESSAGE",
+    payload: number | [number, string]
+  ) => void;
 }) {
-  console.log("rendering message list component");
   const [isModalOpen, setModalOpen] = useState(false);
-  const [currentMessage, setCurrentMessage] = useState<UserMessage | null>(null);
+  const [currentMessage, setCurrentMessage] = useState<UserMessage | null>(
+    null
+  );
   const [editedText, setEditedText] = useState("");
 
   function openEditModal(message: UserMessage) {
-    setCurrentMessage(message); // Set the message to be edited
-    setEditedText(message.text); // Set the initial value of the modal input
-    setModalOpen(true); // Open the modal
+    setCurrentMessage(message);
+    setEditedText(message.text);
+    setModalOpen(true);
   }
 
   function closeEditModal() {
-    setModalOpen(false); // Close the modal
-    setCurrentMessage(null); // Clear the current message
+    setModalOpen(false);
+    setCurrentMessage(null);
   }
 
   function saveMessage() {
     if (currentMessage) {
       onAction("EDIT_MESSAGE", [currentMessage.id, editedText]);
-      closeEditModal(); // Close the modal after saving
+      closeEditModal();
     }
   }
 
@@ -78,7 +82,7 @@ function MessageList({
             <h2>Edit Message</h2>
             <textarea
               value={editedText}
-              onChange={(e) => setEditedText(e.target.value)} // Update state with new text
+              onChange={(e) => setEditedText(e.target.value)}
             />
             <div className="ModalActions">
               <button onClick={saveMessage}>Save</button>
