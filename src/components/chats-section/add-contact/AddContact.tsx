@@ -3,13 +3,15 @@ import "./styles.css";
 import { AllUserMessages, User } from "@/types/common-types";
 
 function AddContact({
-  messages,
-  setMessages,
+  users,
+  setUsers,
   setSelectedUser,
 }: {
+  users: User[];
+  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
   messages: AllUserMessages;
   setMessages: React.Dispatch<React.SetStateAction<AllUserMessages>>;
-  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>
+  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
 }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [contactName, setcontactName] = useState("");
@@ -23,12 +25,18 @@ function AddContact({
   }
 
   function startNewChat() {
+    const newUserId = users.length > 0 ? users[users.length - 1].id + 1 : 0;
     const newUser = {
-        id: "user_id_50",
-        name: contactName,
-        profileImg: "https://fastly.picsum.photos/id/297/200/300.jpg?hmac=SF0Y51mRP7i6CoLBIuliqQwDIUJNyf63_r3xhamVSLE"
+      id: newUserId + "",
+      name: contactName,
+      profileImg:
+        "https://fastly.picsum.photos/id/297/200/300.jpg?hmac=SF0Y51mRP7i6CoLBIuliqQwDIUJNyf63_r3xhamVSLE",
+    };
+    if (users) {
+      setUsers([...users, newUser]);
+    } else {
+      setUsers([newUser]);
     }
-    setMessages({...messages, [newUser.id]: []});
     setSelectedUser(newUser);
     setcontactName("");
     setModalOpen(false);

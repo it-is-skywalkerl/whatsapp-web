@@ -1,12 +1,13 @@
 import { AllUserMessages, User } from "@/types/common-types";
-import { CONNECTIONS } from "../../../constant/connections";
 import "./styles.css";
 
 function Contacts({
+  users,
   selectedUser,
   messages,
   onAction,
 }: {
+  users: User[];
   selectedUser: User | null;
   messages: AllUserMessages;
   onAction: (actionType: "SELECT_USER", payload: string) => void;
@@ -17,7 +18,7 @@ function Contacts({
 
   return (
     <div>
-      {CONNECTIONS.map((contact) => (
+      {users.map((contact) => (
         <div
           key={contact.id}
           id={contact.id}
