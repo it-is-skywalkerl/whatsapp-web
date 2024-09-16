@@ -1,5 +1,5 @@
 .Contact {
-  height: 72px;
+  height: 76px;
   padding: 10px 20px;
   display: flex;
   -webkit-box-align: center;
@@ -37,14 +37,16 @@
   justify-content: space-between;
 }
 
+.NameAndLatestMessageDiv {
+  display: flex;
+  flex-direction: column;
+}
+
 .ProfileName {
   overflow: hidden;
   margin-bottom: 2px;
-  display: flex;
-  align-self: center;
+  align-self: left;
   margin-left: 1.3rem;
-  justify-content: space-between;
-  flex: 1 1 0%;
 }
 
 .Contact h2 {
@@ -55,4 +57,9 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.LatestMessage {
+  color: rgba(204, 204, 204, 0.784);
+  margin-left: 1.3rem;
 }

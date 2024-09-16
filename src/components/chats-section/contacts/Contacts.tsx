@@ -1,12 +1,14 @@
-import { User } from "@/types/common-types";
+import { AllUserMessages, User } from "@/types/common-types";
 import { CONNECTIONS } from "../../../constant/connections";
 import "./styles.css";
 
 function Contacts({
   selectedUser,
-  onAction
+  messages,
+  onAction,
 }: {
   selectedUser: User | null;
+  messages: AllUserMessages;
   onAction: (actionType: "SELECT_USER", payload: string) => void;
 }) {
   function handleClick(event: React.MouseEvent<HTMLDivElement>) {
@@ -29,8 +31,15 @@ function Contacts({
           <div className="ProfilePhoto">
             <img src={contact.profileImg} alt="" />
           </div>
-          <div className="ProfileName">
-            <h2>{contact.name}</h2>
+          <div className="NameAndLatestMessageDiv">
+            <div className="ProfileName">
+              <h2>{contact.name}</h2>
+            </div>
+            <div className="LatestMessage">
+              {messages[contact.id]
+                ? messages[contact.id][messages[contact.id].length - 1].text
+                : ""}
+            </div>
           </div>
         </div>
       ))}

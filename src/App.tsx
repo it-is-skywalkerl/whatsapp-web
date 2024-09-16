@@ -118,6 +118,7 @@ function App() {
     <div className="MainApp">
       <Chats
         selectedUser={selectedUser}
+        messages={messages}
         onAction={
           onAction as (actionType: "SELECT_USER", payload: string) => void
         }
