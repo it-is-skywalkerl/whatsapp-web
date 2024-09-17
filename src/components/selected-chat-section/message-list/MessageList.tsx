@@ -15,7 +15,8 @@ function MessageList({
     payload: number | [number, string]
   ) => void;
 }) {
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [currentMessage, setCurrentMessage] = useState<UserMessage | null>(
     null
   );
@@ -27,11 +28,12 @@ function MessageList({
 
   function openEditModal(message: UserMessage) {
     setCurrentMessage(message);
-    setModalOpen(true);
+    setEditModalOpen(true);
   }
 
-  function deleteMessage(id: number) {
-    onAction("DELETE_MESSAGE", id);
+  function openDeleteModal(message: UserMessage) {
+    setCurrentMessage(message);
+    setDeleteModalOpen(true);
   }
 
   return (
@@ -56,7 +58,7 @@ function MessageList({
               <div className="DeleteDiv">
                 <button
                   className="DeleteButton"
-                  onClick={() => deleteMessage(message.id)}
+                  onClick={() => openDeleteModal(message)}
                 >
                   Delete
                 </button>
@@ -73,15 +75,26 @@ function MessageList({
         <div ref={messagesEndRef} />
       </div>
 
-      {isModalOpen && (
+      {isEditModalOpen && (
         <Modal
           modalType="EDIT_MESSAGE"
           headerText="Edit"
           dataObj={{
             currentMessage: currentMessage,
-            setModalOpen: setModalOpen,
+            setModalOpen: setEditModalOpen,
             setCurrentMessage: setCurrentMessage,
             onAction: onAction,
+          }}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <Modal
+          modalType="DELETE_MESSAGE"
+          headerText="Are you sure you want to delete this message?"
+          dataObj={{
+            setModalOpen: setDeleteModalOpen,
+            onAction: onAction,
+            currentMessage: currentMessage,
           }}
         />
       )}

@@ -5,44 +5,21 @@ function Modal({
   headerText,
   dataObj,
 }: {
-  modalType: "EDIT_MESSAGE" | "DELETE_MESSAGE" | "ADD_NEW_USER";
+  modalType: "EDIT_MESSAGE" | "DELETE_MESSAGE" | "ADD_NEW_USER" | "DELETE_USER";
   headerText: string;
   dataObj: { [key: string]: any };
 }) {
   const [textAreaValue, setTextAreaValue] = useState<string>("");
 
-  function closeEditModal() {
-    dataObj.setModalOpen(false);
-    dataObj.setCurrentMessage(null);
-  }
-
-  function saveMessage() {
-    if (dataObj.currentMessage) {
-      dataObj.onAction("EDIT_MESSAGE", [
-        dataObj.currentMessage.id,
-        textAreaValue,
-      ]);
-      closeEditModal();
-    }
-  }
-
-  function closeContactModal() {
-    dataObj.setModalOpen(false);
-  }
-
-  function startNewChat() {
-    dataObj.onAction("ADD_NEW_USER", textAreaValue);
-    closeContactModal();
-  }
-
   function closeModal() {
     switch (modalType) {
       case "EDIT_MESSAGE":
-        closeEditModal();
-        break;
+      case "DELETE_MESSAGE":
       case "ADD_NEW_USER":
-        closeContactModal();
+      case "DELETE_USER":
+        dataObj.setModalOpen(false);
         break;
+
       default:
         console.warn("Unhandled close modal case");
     }
@@ -51,11 +28,29 @@ function Modal({
   function yesFunction() {
     switch (modalType) {
       case "EDIT_MESSAGE":
-        saveMessage();
+        dataObj.onAction("EDIT_MESSAGE", [
+          dataObj.currentMessage.id,
+          textAreaValue,
+        ]);
+        dataObj.setModalOpen(false);
+        dataObj.setCurrentMessage(null);
         break;
+
+      case "DELETE_MESSAGE":
+        dataObj.onAction("DELETE_MESSAGE", dataObj.currentMessage.id);
+        dataObj.setModalOpen(false);
+        break;
+
       case "ADD_NEW_USER":
-        startNewChat();
+        dataObj.onAction("ADD_NEW_USER", textAreaValue);
+        dataObj.setModalOpen(false);
         break;
+
+      case "DELETE_USER":
+        dataObj.onAction("DELETE_USER", "");
+        dataObj.setModalOpen(false);
+        break;
+
       default:
         console.warn("Unhandled yes function case");
     }
