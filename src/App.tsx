@@ -2,13 +2,28 @@ import "./App.css";
 import Chats from "./components/chats-section/Chats";
 import SelectedChat from "./components/selected-chat-section/SelectedChat";
 import DefaultUnselectedChatDisplay from "./components/default-unselected-chat-display/DefaultUnselectedChatDisplay";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AllUserMessages, User, UserMessage } from "./types/common-types";
 
 function App() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<AllUserMessages>({});
   const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    const storedMessages = getMessagesFromLocalStorage();
+    const storedUsers = getUsersFromLocalStorage();
+    if (Object.keys(storedMessages).length > 0) setMessages(storedMessages);
+    if (Object.keys(storedUsers).length > 0) setUsers(storedUsers);
+  }, []);
+
+  useEffect(() => {
+    saveMessagesToLocalStorage(messages);
+  }, [messages]);
+
+  useEffect(() => {
+    saveUsersToLocalStorage(users);
+  }, [users]);
 
   function handleMessages(
     actionType: "SEND_MESSAGE" | "EDIT_MESSAGE" | "DELETE_MESSAGE",
@@ -164,6 +179,24 @@ function App() {
       )}
     </div>
   );
+
+  function saveMessagesToLocalStorage(userMessages: AllUserMessages) {
+    localStorage.setItem("messages", JSON.stringify(userMessages));
+  }
+
+  function getMessagesFromLocalStorage(): AllUserMessages {
+    const savedMessages = localStorage.getItem("messages");
+    return savedMessages ? JSON.parse(savedMessages) : {};
+  }
+
+  function saveUsersToLocalStorage(users: User[]) {
+    localStorage.setItem("users", JSON.stringify(users));
+  }
+
+  function getUsersFromLocalStorage(): User[] {
+    const savedUsers = localStorage.getItem("users");
+    return savedUsers ? JSON.parse(savedUsers) : {};
+  }
 }
 
 export default App;
