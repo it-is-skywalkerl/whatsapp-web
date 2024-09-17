@@ -11,7 +11,14 @@ function App() {
   const [messages, setMessages] = useState<AllUserMessages>({});
 
   function handleMessages(
+    // Convert this Constants in seperate file and use them everywhere
+    /*
+      1. If we need to change the key it will be convenient to chang at one place
+      2. We should avoid typos in code base as it is quite obvious to make type while defining string
+      3. Explore keyof typeof for giving types
+    */
     actionType: "SEND_MESSAGE" | "EDIT_MESSAGE" | "DELETE_MESSAGE",
+    // payload: { [key: string]: string |  }
     payload: string | number | [number, string]
   ) {
     if (selectedUser)
@@ -39,6 +46,7 @@ function App() {
 
         case "EDIT_MESSAGE":
           {
+            // remove check 
             if (Array.isArray(payload)) {
               const selectedUserMessageList = messages[selectedUser.id].map(
                 (message: UserMessage) =>

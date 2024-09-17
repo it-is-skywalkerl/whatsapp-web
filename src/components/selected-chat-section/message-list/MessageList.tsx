@@ -9,28 +9,36 @@ function MessageList({
   selectedUserMessages: UserMessage[];
   onAction: (actionType: "EDIT_MESSAGE" | "DELETE_MESSAGE", payload: number | [number, string]) => void;
 }) {
-  console.log("rendering message list component");
+  // const [modalProps, setModalProps] = useState({ isOpen: false, message: undefined, onSubmit: undefined });
   const [isModalOpen, setModalOpen] = useState(false);
-  const [currentMessage, setCurrentMessage] = useState<UserMessage | null>(null);
-  const [editedText, setEditedText] = useState("");
-
-  function openEditModal(message: UserMessage) {
-    setCurrentMessage(message); // Set the message to be edited
-    setEditedText(message.text); // Set the initial value of the modal input
-    setModalOpen(true); // Open the modal
-  }
 
   function closeEditModal() {
-    setModalOpen(false); // Close the modal
-    setCurrentMessage(null); // Clear the current message
+    setModalOpen(false); 
+    setCurrentMessage(null);
   }
+
+  // reductant state
+  const [currentMessage, setCurrentMessage] = useState<UserMessage | null>(null);
+
+  // Keep this state inside Modal
+  const [editedText, setEditedText] = useState("");
 
   function saveMessage() {
     if (currentMessage) {
+      // pass meaningful object in payload to handle this case in onAction
       onAction("EDIT_MESSAGE", [currentMessage.id, editedText]);
-      closeEditModal(); // Close the modal after saving
+      closeEditModal();
     }
   }
+
+  function openEditModal(message: UserMessage) {
+    // setModalProps({ isOpen: true, message, onSubmit: saveMessage });
+    setCurrentMessage(message); 
+    setEditedText(message.text); 
+    setModalOpen(true); 
+  }
+
+ 
 
   function deleteMessage(id: number) {
     onAction("DELETE_MESSAGE", id);
@@ -71,14 +79,15 @@ function MessageList({
           </div>
         ))}
       </div>
-
+      {/* { modalProps.isOpen ? <Modal {...modalProps}/> : null } */}
       {isModalOpen && (
+        // Seperat out in different file
         <div className="Modal">
           <div className="ModalContent">
             <h2>Edit Message</h2>
             <textarea
               value={editedText}
-              onChange={(e) => setEditedText(e.target.value)} // Update state with new text
+              onChange={(e) => setEditedText(e.target.value)}
             />
             <div className="ModalActions">
               <button onClick={saveMessage}>Save</button>
