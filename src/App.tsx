@@ -9,6 +9,7 @@ function App() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<AllUserMessages>({});
   const [users, setUsers] = useState<User[]>([]);
+  const [isSpaciousMode, setIsSpaciousMode] = useState<boolean>(true);
 
   useEffect(() => {
     const storedMessages = getMessagesFromLocalStorage();
@@ -133,7 +134,8 @@ function App() {
       | "DELETE_MESSAGE"
       | "SELECT_USER"
       | "ADD_NEW_USER"
-      | "DELETE_USER",
+      | "DELETE_USER"
+      | "TOGGLE_VIEW",
     payload: string | number
   ) {
     switch (actionType) {
@@ -150,6 +152,10 @@ function App() {
         handleUser(actionType, payload);
         break;
 
+      case "TOGGLE_VIEW":
+        setIsSpaciousMode(!isSpaciousMode);
+        break;
+
       default:
         console.warn(`Unhandled action type: ${actionType}`);
     }
@@ -158,18 +164,20 @@ function App() {
   return (
     <div className="MainApp">
       <Chats
+        isSpaciousMode={isSpaciousMode}
         users={users}
         selectedUser={selectedUser}
         messages={messages}
         onAction={
           onAction as (
-            actionType: "SELECT_USER" | "ADD_NEW_USER",
+            actionType: "SELECT_USER" | "ADD_NEW_USER" | "TOGGLE_VIEW",
             payload: string
           ) => void
         }
       />
       {selectedUser ? (
         <SelectedChat
+          isSpaciousMode={isSpaciousMode}
           selectedUser={selectedUser}
           selectedUserMessages={messages[selectedUser.id]}
           onAction={onAction}

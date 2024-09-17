@@ -3,9 +3,11 @@ import "./styles.css";
 import { useState } from "react";
 
 function MessageList({
+  isSpaciousMode,
   selectedUserMessages,
   onAction,
 }: {
+  isSpaciousMode: boolean;
   selectedUserMessages: UserMessage[];
   onAction: (
     actionType: "EDIT_MESSAGE" | "DELETE_MESSAGE",
@@ -70,7 +72,9 @@ function MessageList({
             </div>
             <div className="MessageText">
               <div className="messageText">{message.text}</div>
-              <div className="TimeStamp">{message.timeStamp.slice(0, 5)}</div>
+              {isSpaciousMode && (
+                <div className="TimeStamp">{message.timeStamp.slice(0, 5)}</div>
+              )}
             </div>
           </div>
         ))}

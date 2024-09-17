@@ -2,11 +2,13 @@ import { AllUserMessages, User } from "@/types/common-types";
 import "./styles.css";
 
 function Contacts({
+  isSpaciousMode,
   users,
   selectedUser,
   messages,
   onAction,
 }: {
+  isSpaciousMode: boolean;
   users: User[];
   selectedUser: User | null;
   messages: AllUserMessages;
@@ -36,15 +38,13 @@ function Contacts({
             <div className="ProfileName">
               <h2>{contact.name}</h2>
             </div>
-            {messages[contact.id].length>0 && (
-              <>
-                <div className="LatestMessage">
+            {messages[contact.id].length > 0 && isSpaciousMode && (
+              <div className="LatestMessage">
+                {messages[contact.id][messages[contact.id].length - 1].text}
+                <div className="Tooltip">
                   {messages[contact.id][messages[contact.id].length - 1].text}
-                  <div className="Tooltip">
-                    {messages[contact.id][messages[contact.id].length - 1].text}
-                  </div>
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>

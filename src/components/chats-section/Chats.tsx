@@ -7,24 +7,32 @@ import { AllUserMessages, User } from "@/types/common-types";
 import AddContact from "./add-contact/AddContact";
 
 function Chats({
+  isSpaciousMode,
   users,
   selectedUser,
   messages,
   onAction,
 }: {
+  isSpaciousMode: boolean;
   users: User[];
   selectedUser: User | null;
   messages: AllUserMessages;
   onAction: (
-    actionType: "SELECT_USER" | "ADD_NEW_USER",
+    actionType: "SELECT_USER" | "ADD_NEW_USER" | "TOGGLE_VIEW",
     payload: string
   ) => void;
 }) {
   return (
     <div className="Chats">
-      <Profile />
+      <Profile
+        isSpaciousMode={isSpaciousMode}
+        onAction={
+          onAction as (actionType: "TOGGLE_VIEW", payload: string) => void
+        }
+      />
       <SearchField />
       <Contacts
+        isSpaciousMode={isSpaciousMode}
         users={users}
         selectedUser={selectedUser}
         messages={messages}

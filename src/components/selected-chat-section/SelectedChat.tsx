@@ -5,10 +5,12 @@ import "./styles.css";
 import { User, UserMessage } from "@/types/common-types";
 
 function SelectedChat({
+  isSpaciousMode,
   selectedUser,
   selectedUserMessages,
   onAction,
 }: {
+  isSpaciousMode: boolean;
   selectedUser: User;
   selectedUserMessages: UserMessage[];
   onAction: (
@@ -21,9 +23,13 @@ function SelectedChat({
       <div className="BackgroundImage"></div>
       <SelectedChatHeader selectedUser={selectedUser} onAction={onAction} />
       <MessageList
+        isSpaciousMode={isSpaciousMode}
         selectedUserMessages={selectedUserMessages}
         onAction={
-          onAction as (actionType: "EDIT_MESSAGE" | "DELETE_MESSAGE", payload: number | [number, string]) => void
+          onAction as (
+            actionType: "EDIT_MESSAGE" | "DELETE_MESSAGE",
+            payload: number | [number, string]
+          ) => void
         }
       />
       <SendMessageBox
