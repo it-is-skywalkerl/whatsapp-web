@@ -1,6 +1,6 @@
 import { UserMessage } from "@/types/common-types";
 import "./styles.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function MessageList({
   isSpaciousMode,
@@ -19,6 +19,11 @@ function MessageList({
     null
   );
   const [editedText, setEditedText] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [selectedUserMessages]);
 
   function openEditModal(message: UserMessage) {
     setCurrentMessage(message);
@@ -78,6 +83,7 @@ function MessageList({
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       {isModalOpen && (
