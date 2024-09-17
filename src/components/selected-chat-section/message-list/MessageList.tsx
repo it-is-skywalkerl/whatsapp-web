@@ -1,6 +1,7 @@
 import { UserMessage } from "@/types/common-types";
 import "./styles.css";
 import { useEffect, useRef, useState } from "react";
+import Modal from "../../modal/Modal";
 
 function MessageList({
   isSpaciousMode,
@@ -18,7 +19,6 @@ function MessageList({
   const [currentMessage, setCurrentMessage] = useState<UserMessage | null>(
     null
   );
-  const [editedText, setEditedText] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -27,20 +27,7 @@ function MessageList({
 
   function openEditModal(message: UserMessage) {
     setCurrentMessage(message);
-    setEditedText(message.text);
     setModalOpen(true);
-  }
-
-  function closeEditModal() {
-    setModalOpen(false);
-    setCurrentMessage(null);
-  }
-
-  function saveMessage() {
-    if (currentMessage) {
-      onAction("EDIT_MESSAGE", [currentMessage.id, editedText]);
-      closeEditModal();
-    }
   }
 
   function deleteMessage(id: number) {
@@ -87,19 +74,16 @@ function MessageList({
       </div>
 
       {isModalOpen && (
-        <div className="Modal">
-          <div className="ModalContent">
-            <h2>Edit Message</h2>
-            <textarea
-              value={editedText}
-              onChange={(e) => setEditedText(e.target.value)}
-            />
-            <div className="ModalActions">
-              <button onClick={saveMessage}>Save</button>
-              <button onClick={closeEditModal}>Cancel</button>
-            </div>
-          </div>
-        </div>
+        <Modal
+          modalType="EDIT_MESSAGE"
+          headerText="Edit"
+          dataObj={{
+            currentMessage: currentMessage,
+            setModalOpen: setModalOpen,
+            setCurrentMessage: setCurrentMessage,
+            onAction: onAction,
+          }}
+        />
       )}
     </div>
   );
