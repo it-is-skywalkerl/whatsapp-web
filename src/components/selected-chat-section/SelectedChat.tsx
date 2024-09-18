@@ -3,6 +3,10 @@ import MessageList from "./message-list/MessageList";
 import SendMessageBox from "./send-message-box/SendMessageBox";
 import "./styles.css";
 import { User, UserMessage } from "@/types/common-types";
+import {
+  handleMessageActionTypes,
+  OnActionTypes,
+} from "@/constant/types/onAction-types";
 
 function SelectedChat({
   isSpaciousMode,
@@ -14,7 +18,9 @@ function SelectedChat({
   selectedUser: User;
   selectedUserMessages: UserMessage[];
   onAction: (
-    actionType: "SEND_MESSAGE" | "DELETE_MESSAGE" | "DELETE_USER",
+    actionType:
+      | keyof typeof handleMessageActionTypes
+      | typeof OnActionTypes.DELETE_USER,
     payload: string | number
   ) => void;
 }) {
@@ -22,19 +28,26 @@ function SelectedChat({
     <div className="SelectedChatSection">
       <div className="BackgroundImage"></div>
       <SelectedChatHeader selectedUser={selectedUser} onAction={onAction} />
+
       <MessageList
         isSpaciousMode={isSpaciousMode}
         selectedUserMessages={selectedUserMessages}
         onAction={
           onAction as (
-            actionType: "EDIT_MESSAGE" | "DELETE_MESSAGE",
+            actionType:
+              | typeof OnActionTypes.EDIT_MESSAGE
+              | typeof OnActionTypes.DELETE_MESSAGE,
             payload: number | [number, string]
           ) => void
         }
       />
+
       <SendMessageBox
         onAction={
-          onAction as (actionType: "SEND_MESSAGE", payload: string) => void
+          onAction as (
+            actionType: typeof OnActionTypes.SEND_MESSAGE,
+            payload: string
+          ) => void
         }
       />
     </div>

@@ -1,5 +1,6 @@
-import { AllUserMessages, User } from "@/types/common-types";
+import { AllUserMessages, User } from "../../../constant/types/common-types";
 import "./styles.css";
+import { OnActionTypes } from "../../../constant/types/onAction-types";
 
 function Contacts({
   isSpaciousMode,
@@ -12,10 +13,13 @@ function Contacts({
   users: User[];
   selectedUser: User | null;
   messages: AllUserMessages;
-  onAction: (actionType: "SELECT_USER", payload: string) => void;
+  onAction: (
+    actionType: typeof OnActionTypes.SELECT_USER,
+    payload: string
+  ) => void;
 }) {
   function handleClick(event: React.MouseEvent<HTMLDivElement>) {
-    onAction("SELECT_USER", event.currentTarget.id);
+    onAction(OnActionTypes.SELECT_USER, event.currentTarget.id);
   }
 
   return (

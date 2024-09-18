@@ -1,15 +1,19 @@
-import { User } from "@/types/common-types";
+import { User } from "../../../constant/types/common-types";
 import "./styles.css";
 import { DeleteIcon } from "../../../assets/icons/Icons";
 import Modal from "../../modal/Modal";
 import { useState } from "react";
+import { OnActionTypes } from "../../../constant/types/onAction-types";
 
 function SelectedChatHeader({
   selectedUser,
   onAction,
 }: {
   selectedUser: User;
-  onAction: (actionType: "DELETE_USER", payload: string | number) => void;
+  onAction: (
+    actionType: typeof OnActionTypes.DELETE_USER,
+    payload: string | number
+  ) => void;
 }) {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -30,7 +34,7 @@ function SelectedChatHeader({
       </div>
       {isModalOpen && (
         <Modal
-          modalType="DELETE_USER"
+          modalType={OnActionTypes.DELETE_USER}
           headerText="Are you sure you want to delete this conversation?"
           dataObj={{ onAction: onAction, setModalOpen: setModalOpen }}
         />

@@ -3,7 +3,16 @@ import Chats from "./components/chats-section/Chats";
 import SelectedChat from "./components/selected-chat-section/SelectedChat";
 import DefaultUnselectedChatDisplay from "./components/default-unselected-chat-display/DefaultUnselectedChatDisplay";
 import { useEffect, useState } from "react";
-import { AllUserMessages, User, UserMessage } from "./types/common-types";
+import {
+  AllUserMessages,
+  User,
+  UserMessage,
+} from "./constant/types/common-types";
+import {
+  handleMessageActionTypes,
+  handleUserActionTypes,
+  OnActionTypes,
+} from "./constant/types/onAction-types";
 
 function App() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -27,12 +36,12 @@ function App() {
   }, [users]);
 
   function handleMessages(
-    actionType: "SEND_MESSAGE" | "EDIT_MESSAGE" | "DELETE_MESSAGE",
+    actionType: keyof typeof handleMessageActionTypes,
     payload: string | number | [number, string]
   ) {
     if (selectedUser)
       switch (actionType) {
-        case "SEND_MESSAGE":
+        case handleMessageActionTypes.SEND_MESSAGE:
           payload = payload.toString();
           if (payload.length > 0) {
             const timeStamp = new Date().toTimeString().split(" ")[0];
@@ -53,24 +62,22 @@ function App() {
           }
           break;
 
-        case "EDIT_MESSAGE":
+        case handleMessageActionTypes.EDIT_MESSAGE:
           {
-            if (Array.isArray(payload)) {
-              const selectedUserMessageList = messages[selectedUser.id].map(
-                (message: UserMessage) =>
-                  message.id === (payload as [number, string])[0]
-                    ? { ...message, text: (payload as [number, string])[1] }
-                    : message
-              );
-              setMessages({
-                ...messages,
-                [selectedUser.id]: selectedUserMessageList,
-              });
-            }
+            const selectedUserMessageList = messages[selectedUser.id].map(
+              (message: UserMessage) =>
+                message.id === (payload as [number, string])[0]
+                  ? { ...message, text: (payload as [number, string])[1] }
+                  : message
+            );
+            setMessages({
+              ...messages,
+              [selectedUser.id]: selectedUserMessageList,
+            });
           }
           break;
 
-        case "DELETE_MESSAGE":
+        case handleMessageActionTypes.DELETE_MESSAGE:
           {
             const selectedUserMessageList = messages[selectedUser.id].filter(
               (message: UserMessage) => message.id !== payload
@@ -85,11 +92,11 @@ function App() {
   }
 
   function handleUser(
-    actionType: "SELECT_USER" | "ADD_NEW_USER" | "DELETE_USER",
+    actionType: keyof typeof handleUserActionTypes,
     payload: string
   ) {
     switch (actionType) {
-      case "SELECT_USER":
+      case handleUserActionTypes.SELECT_USER:
         {
           const USER = users.find((connection) => connection.id === payload);
           if (USER !== undefined) {
@@ -98,7 +105,7 @@ function App() {
         }
         break;
 
-      case "ADD_NEW_USER":
+      case handleUserActionTypes.ADD_NEW_USER:
         {
           const newUserId =
             users.length > 0 ? users[users.length - 1].id + 1 : 0;
@@ -117,7 +124,7 @@ function App() {
         }
         break;
 
-      case "DELETE_USER":
+      case handleUserActionTypes.DELETE_USER:
         if (selectedUser) {
           delete messages[selectedUser.id];
           setUsers(users.filter((user: User) => user !== selectedUser));
@@ -128,31 +135,24 @@ function App() {
   }
 
   function onAction(
-    actionType:
-      | "SEND_MESSAGE"
-      | "EDIT_MESSAGE"
-      | "DELETE_MESSAGE"
-      | "SELECT_USER"
-      | "ADD_NEW_USER"
-      | "DELETE_USER"
-      | "TOGGLE_VIEW",
+    actionType: keyof typeof OnActionTypes,
     payload: string | number
   ) {
     switch (actionType) {
-      case "SEND_MESSAGE":
-      case "EDIT_MESSAGE":
-      case "DELETE_MESSAGE":
+      case OnActionTypes.SEND_MESSAGE:
+      case OnActionTypes.EDIT_MESSAGE:
+      case OnActionTypes.DELETE_MESSAGE:
         handleMessages(actionType, payload);
         break;
 
-      case "SELECT_USER":
-      case "ADD_NEW_USER":
-      case "DELETE_USER":
+      case OnActionTypes.SELECT_USER:
+      case OnActionTypes.ADD_NEW_USER:
+      case OnActionTypes.DELETE_USER:
         payload = payload.toString();
         handleUser(actionType, payload);
         break;
 
-      case "TOGGLE_VIEW":
+      case OnActionTypes.TOGGLE_VIEW:
         setIsSpaciousMode(!isSpaciousMode);
         break;
 
@@ -168,12 +168,7 @@ function App() {
         users={users}
         selectedUser={selectedUser}
         messages={messages}
-        onAction={
-          onAction as (
-            actionType: "SELECT_USER" | "ADD_NEW_USER" | "TOGGLE_VIEW",
-            payload: string
-          ) => void
-        }
+        onAction={onAction}
       />
       {selectedUser ? (
         <SelectedChat

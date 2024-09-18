@@ -1,7 +1,8 @@
-import { UserMessage } from "@/types/common-types";
+import { UserMessage } from "../../../constant/types/common-types";
 import "./styles.css";
 import { useEffect, useRef, useState } from "react";
 import Modal from "../../modal/Modal";
+import { OnActionTypes } from "../../../constant/types/onAction-types";
 
 function MessageList({
   isSpaciousMode,
@@ -11,7 +12,9 @@ function MessageList({
   isSpaciousMode: boolean;
   selectedUserMessages: UserMessage[];
   onAction: (
-    actionType: "EDIT_MESSAGE" | "DELETE_MESSAGE",
+    actionType:
+      | typeof OnActionTypes.EDIT_MESSAGE
+      | typeof OnActionTypes.DELETE_MESSAGE,
     payload: number | [number, string]
   ) => void;
 }) {
@@ -77,7 +80,7 @@ function MessageList({
 
       {isEditModalOpen && (
         <Modal
-          modalType="EDIT_MESSAGE"
+          modalType={OnActionTypes.EDIT_MESSAGE}
           headerText="Edit"
           dataObj={{
             currentMessage: currentMessage,
@@ -89,7 +92,7 @@ function MessageList({
       )}
       {isDeleteModalOpen && (
         <Modal
-          modalType="DELETE_MESSAGE"
+          modalType={OnActionTypes.DELETE_MESSAGE}
           headerText="Are you sure you want to delete this message?"
           dataObj={{
             setModalOpen: setDeleteModalOpen,

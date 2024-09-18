@@ -1,3 +1,4 @@
+import { OnActionTypes } from "../../constant/types/onAction-types";
 import { useState } from "react";
 
 function Modal({
@@ -5,7 +6,7 @@ function Modal({
   headerText,
   dataObj,
 }: {
-  modalType: "EDIT_MESSAGE" | "DELETE_MESSAGE" | "ADD_NEW_USER" | "DELETE_USER";
+  modalType: keyof typeof OnActionTypes;
   headerText: string;
   dataObj: { [key: string]: any };
 }) {
@@ -13,10 +14,10 @@ function Modal({
 
   function closeModal() {
     switch (modalType) {
-      case "EDIT_MESSAGE":
-      case "DELETE_MESSAGE":
-      case "ADD_NEW_USER":
-      case "DELETE_USER":
+      case OnActionTypes.EDIT_MESSAGE:
+      case OnActionTypes.DELETE_MESSAGE:
+      case OnActionTypes.ADD_NEW_USER:
+      case OnActionTypes.DELETE_USER:
         dataObj.setModalOpen(false);
         break;
 
@@ -27,8 +28,8 @@ function Modal({
 
   function yesFunction() {
     switch (modalType) {
-      case "EDIT_MESSAGE":
-        dataObj.onAction("EDIT_MESSAGE", [
+      case OnActionTypes.EDIT_MESSAGE:
+        dataObj.onAction(OnActionTypes.EDIT_MESSAGE, [
           dataObj.currentMessage.id,
           textAreaValue,
         ]);
@@ -36,18 +37,21 @@ function Modal({
         dataObj.setCurrentMessage(null);
         break;
 
-      case "DELETE_MESSAGE":
-        dataObj.onAction("DELETE_MESSAGE", dataObj.currentMessage.id);
+      case OnActionTypes.DELETE_MESSAGE:
+        dataObj.onAction(
+          OnActionTypes.DELETE_MESSAGE,
+          dataObj.currentMessage.id
+        );
         dataObj.setModalOpen(false);
         break;
 
-      case "ADD_NEW_USER":
-        dataObj.onAction("ADD_NEW_USER", textAreaValue);
+      case OnActionTypes.ADD_NEW_USER:
+        dataObj.onAction(OnActionTypes.ADD_NEW_USER, textAreaValue);
         dataObj.setModalOpen(false);
         break;
 
-      case "DELETE_USER":
-        dataObj.onAction("DELETE_USER", "");
+      case OnActionTypes.DELETE_USER:
+        dataObj.onAction(OnActionTypes.DELETE_USER, "");
         dataObj.setModalOpen(false);
         break;
 
@@ -60,7 +64,8 @@ function Modal({
     <div className="Modal">
       <div className="ModalContent">
         <h2>{headerText}</h2>
-        {(modalType === "EDIT_MESSAGE" || modalType === "ADD_NEW_USER") && (
+        {(modalType === OnActionTypes.EDIT_MESSAGE ||
+          modalType === OnActionTypes.ADD_NEW_USER) && (
           <textarea
             value={textAreaValue}
             onChange={(e) => setTextAreaValue(e.target.value)}

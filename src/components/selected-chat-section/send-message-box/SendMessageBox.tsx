@@ -1,16 +1,20 @@
 import { useState } from "react";
 import { AttachmentIcon, SendButtonIcon } from "../../../assets/icons/Icons";
 import "./styles.css";
+import { OnActionTypes } from "../../../constant/types/onAction-types";
 
 function SendMessageBox({
   onAction,
 }: {
-  onAction: (actionType: "SEND_MESSAGE", payload: string) => void;
+  onAction: (
+    actionType: typeof OnActionTypes.SEND_MESSAGE,
+    payload: string
+  ) => void;
 }) {
   const [inputMessage, setInputMessage] = useState<string>("");
 
   function sendMessage() {
-    onAction("SEND_MESSAGE", inputMessage);
+    onAction(OnActionTypes.SEND_MESSAGE, inputMessage);
     setInputMessage("");
   }
 

@@ -5,6 +5,7 @@ import SearchField from "./search-field/SearchField";
 import Contacts from "./contacts/Contacts";
 import { AllUserMessages, User } from "@/types/common-types";
 import AddContact from "./add-contact/AddContact";
+import { OnActionTypes } from "@/constant/types/onAction-types";
 
 function Chats({
   isSpaciousMode,
@@ -18,7 +19,10 @@ function Chats({
   selectedUser: User | null;
   messages: AllUserMessages;
   onAction: (
-    actionType: "SELECT_USER" | "ADD_NEW_USER" | "TOGGLE_VIEW",
+    actionType:
+      | typeof OnActionTypes.TOGGLE_VIEW
+      | typeof OnActionTypes.SELECT_USER
+      | typeof OnActionTypes.ADD_NEW_USER,
     payload: string
   ) => void;
 }) {
@@ -27,7 +31,10 @@ function Chats({
       <Profile
         isSpaciousMode={isSpaciousMode}
         onAction={
-          onAction as (actionType: "TOGGLE_VIEW", payload: string) => void
+          onAction as (
+            actionType: typeof OnActionTypes.TOGGLE_VIEW,
+            payload: string
+          ) => void
         }
       />
       <SearchField />
@@ -37,12 +44,18 @@ function Chats({
         selectedUser={selectedUser}
         messages={messages}
         onAction={
-          onAction as (actionType: "SELECT_USER", payload: string) => void
+          onAction as (
+            actionType: typeof OnActionTypes.SELECT_USER,
+            payload: string
+          ) => void
         }
       />
       <AddContact
         onAction={
-          onAction as (actionType: "ADD_NEW_USER", payload: string) => void
+          onAction as (
+            actionType: typeof OnActionTypes.ADD_NEW_USER,
+            payload: string
+          ) => void
         }
       />
     </div>
