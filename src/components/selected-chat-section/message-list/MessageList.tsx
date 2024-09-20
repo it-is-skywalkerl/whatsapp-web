@@ -7,21 +7,30 @@ function MessageList({
   onAction,
 }: {
   selectedUserMessages: UserMessage[];
-  onAction: (actionType: "EDIT_MESSAGE" | "DELETE_MESSAGE", payload: number | [number, string]) => void;
+  onAction: (
+    actionType: "EDIT_MESSAGE" | "DELETE_MESSAGE",
+    payload: number | [number, string]
+  ) => void;
 }) {
   // const [modalProps, setModalProps] = useState({ isOpen: false, message: undefined, onSubmit: undefined });
   const [isModalOpen, setModalOpen] = useState(false);
-
-  function closeEditModal() {
-    setModalOpen(false); 
-    setCurrentMessage(null);
-  }
 
   // reductant state
   const [currentMessage, setCurrentMessage] = useState<UserMessage | null>(null);
 
   // Keep this state inside Modal
   const [editedText, setEditedText] = useState("");
+
+  function openEditModal(message: UserMessage) {
+    setCurrentMessage(message);
+    setEditedText(message.text);
+    setModalOpen(true);
+  }
+
+  function closeEditModal() {
+    setModalOpen(false);
+    setCurrentMessage(null);
+  }
 
   function saveMessage() {
     if (currentMessage) {
@@ -33,12 +42,12 @@ function MessageList({
 
   function openEditModal(message: UserMessage) {
     // setModalProps({ isOpen: true, message, onSubmit: saveMessage });
-    setCurrentMessage(message); 
-    setEditedText(message.text); 
-    setModalOpen(true); 
+    setCurrentMessage(message);
+    setEditedText(message.text);
+    setModalOpen(true);
   }
 
- 
+
 
   function deleteMessage(id: number) {
     onAction("DELETE_MESSAGE", id);
