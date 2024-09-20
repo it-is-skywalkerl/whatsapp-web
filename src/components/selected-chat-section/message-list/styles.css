@@ -1,3 +1,8 @@
+button {
+  padding: 4px;
+  cursor: pointer;
+}
+
 .MessagesSection {
   display: flex;
   flex-direction: column;
@@ -6,6 +11,7 @@
   padding: 20px 5% 2pc;
   flex-grow: 1;
 }
+
 .EncryptionMessage {
   background: rgb(32, 39, 43);
   color: rgb(250, 217, 100);
@@ -18,12 +24,14 @@
   line-height: 20px;
   z-index: 9;
 }
+
 .MessageList {
   display: flex;
   flex-direction: column;
   justify-content: end;
   flex-grow: 1;
 }
+
 .Message {
   z-index: 9;
   display: flex;
@@ -34,19 +42,29 @@
   align-self: end;
 }
 
+.EditDiv,
 .DeleteDiv {
   transition: opacity 0.5s linear;
   position: absolute;
   top: -14px;
-  right: -2px;
   opacity: 0;
   z-index: 10;
 }
 
+.EditDiv {
+  right: 36px;
+}
+
+.DeleteDiv {
+  right: -2px;
+}
+
+.Message:hover .EditDiv,
 .Message:hover .DeleteDiv {
   opacity: 1;
 }
 
+.EditButton,
 .DeleteButton {
   border-radius: 5px;
   cursor: pointer;
@@ -54,6 +72,7 @@
   font-size: 0.7em;
   padding: 1px 1px 1px 1px;
 }
+
 
 .MessageText {
   background: #005c4b;
@@ -69,13 +88,41 @@
   display: flex;
   justify-content: space-between;
 }
+
 .messageText {
   max-width: 85%;
   word-wrap: break-word;
 }
+
 .TimeStamp {
   align-self: end;
   color: rgb(166, 168, 170);
   font-size: 0.7rem;
   font-weight: 500;
+}
+
+.Modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+.ModalContent {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  min-width: 300px;
+}
+
+.ModalActions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
 }

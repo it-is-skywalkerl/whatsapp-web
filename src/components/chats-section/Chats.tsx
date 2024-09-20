@@ -3,20 +3,22 @@ import "./styles.css";
 import Profile from "./profile/Profile";
 import SearchField from "./search-field/SearchField";
 import Contacts from "./contacts/Contacts";
-import { User } from "@/types/common-types";
+import { AllUserMessages, User } from "@/types/common-types";
 
 function Chats({
   selectedUser,
+  messages,
   onAction,
 }: {
   selectedUser: User | null;
+  messages: AllUserMessages;
   onAction: (actionType: "SELECT_USER", payload: string) => void;
 }) {
   return (
     <div className="Chats">
       <Profile />
       <SearchField />
-      <Contacts selectedUser={selectedUser} onAction={onAction} />
+      <Contacts selectedUser={selectedUser} messages={messages} onAction={onAction} />
     </div>
   );
 }
