@@ -3,7 +3,7 @@ import "./styles.css";
 import Profile from "./profile/Profile";
 import SearchField from "./search-field/SearchField";
 import Contacts from "./contacts/Contacts";
-import { AllUserMessages, User } from "@/types/common-types";
+import { AllUserMessages, User } from "../../constant/types/common-types";
 import AddContact from "./add-contact/AddContact";
 import { OnActionTypes } from "@/constant/types/onAction-types";
 

@@ -1,4 +1,7 @@
-import { OnActionTypes } from "../../constant/types/onAction-types";
+import {
+  handleMessageActionTypes,
+  OnActionTypes,
+} from "../../constant/types/onAction-types";
 import { useState } from "react";
 
 function Modal({
@@ -29,19 +32,26 @@ function Modal({
   function yesFunction() {
     switch (modalType) {
       case OnActionTypes.EDIT_MESSAGE:
-        dataObj.onAction(OnActionTypes.EDIT_MESSAGE, [
-          dataObj.currentMessage.id,
-          textAreaValue,
-        ]);
+        dataObj.dispatchMessages({
+          type: handleMessageActionTypes.EDIT_MESSAGE,
+          payload: {
+            selectedUserId: dataObj.selectedUserId,
+            selectedMessageId: dataObj.currentMessage.id,
+            editedMessageText: textAreaValue,
+          },
+        });
         dataObj.setModalOpen(false);
         dataObj.setCurrentMessage(null);
         break;
 
       case OnActionTypes.DELETE_MESSAGE:
-        dataObj.onAction(
-          OnActionTypes.DELETE_MESSAGE,
-          dataObj.currentMessage.id
-        );
+        dataObj.dispatchMessages({
+          type: handleMessageActionTypes.DELETE_MESSAGE,
+          payload: {
+            selectedUserId: dataObj.selectedUserId,
+            selectedMessageId: dataObj.currentMessage.id,
+          },
+        });
         dataObj.setModalOpen(false);
         break;
 

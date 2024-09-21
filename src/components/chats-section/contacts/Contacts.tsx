@@ -42,7 +42,7 @@ function Contacts({
             <div className="ProfileName">
               <h2>{contact.name}</h2>
             </div>
-            {messages[contact.id].length > 0 && isSpaciousMode && (
+            {messages[contact.id]?.length > 0 && isSpaciousMode && (
               <div className="LatestMessage">
                 {messages[contact.id][messages[contact.id].length - 1].text}
                 <div className="Tooltip">

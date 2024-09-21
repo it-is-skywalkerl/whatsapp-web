@@ -1,20 +1,30 @@
 import { useState } from "react";
 import { AttachmentIcon, SendButtonIcon } from "../../../assets/icons/Icons";
 import "./styles.css";
-import { OnActionTypes } from "../../../constant/types/onAction-types";
+import { handleMessageActionTypes } from "../../../constant/types/onAction-types";
 
 function SendMessageBox({
-  onAction,
+  dispatchMessages,
+  selectedUserId,
 }: {
-  onAction: (
-    actionType: typeof OnActionTypes.SEND_MESSAGE,
-    payload: string
-  ) => void;
+  dispatchMessages: React.Dispatch<{
+    type: keyof typeof handleMessageActionTypes;
+    payload: {
+      selectedUserId: string;
+      newMessageText?: string;
+      selectedMessageId?: number;
+      editedMessageText?: string;
+    };
+  }>;
+  selectedUserId: string;
 }) {
   const [inputMessage, setInputMessage] = useState<string>("");
 
   function sendMessage() {
-    onAction(OnActionTypes.SEND_MESSAGE, inputMessage);
+    dispatchMessages({
+      type: handleMessageActionTypes.SEND_MESSAGE,
+      payload: { selectedUserId: selectedUserId, newMessageText: inputMessage },
+    });
     setInputMessage("");
   }
 

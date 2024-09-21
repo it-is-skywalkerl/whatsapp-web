@@ -1,22 +1,34 @@
-import { UserMessage } from "../../../constant/types/common-types";
+import {
+  AllUserMessages,
+  UserMessage,
+} from "../../../constant/types/common-types";
 import "./styles.css";
 import { useEffect, useRef, useState } from "react";
 import Modal from "../../modal/Modal";
-import { OnActionTypes } from "../../../constant/types/onAction-types";
+import {
+  handleMessageActionTypes,
+  OnActionTypes,
+} from "../../../constant/types/onAction-types";
 
 function MessageList({
   isSpaciousMode,
+  selectedUserId,
   selectedUserMessages,
-  onAction,
+  dispatchMessages,
 }: {
   isSpaciousMode: boolean;
+  selectedUserId: string;
   selectedUserMessages: UserMessage[];
-  onAction: (
-    actionType:
-      | typeof OnActionTypes.EDIT_MESSAGE
-      | typeof OnActionTypes.DELETE_MESSAGE,
-    payload: number | [number, string]
-  ) => void;
+  dispatchMessages: React.Dispatch<{
+    type: keyof typeof handleMessageActionTypes;
+    payload: {
+      selectedUserId: string;
+      newMessageText?: string;
+      selectedMessageId?: number;
+      editedMessageText?: string;
+      storedMessages?: AllUserMessages;
+    };
+  }>;
 }) {
   const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
@@ -84,9 +96,10 @@ function MessageList({
           headerText="Edit"
           dataObj={{
             currentMessage: currentMessage,
+            selectedUserId: selectedUserId,
             setModalOpen: setEditModalOpen,
             setCurrentMessage: setCurrentMessage,
-            onAction: onAction,
+            dispatchMessages: dispatchMessages,
           }}
         />
       )}
@@ -95,8 +108,9 @@ function MessageList({
           modalType={OnActionTypes.DELETE_MESSAGE}
           headerText="Are you sure you want to delete this message?"
           dataObj={{
+            selectedUserId: selectedUserId,
             setModalOpen: setDeleteModalOpen,
-            onAction: onAction,
+            dispatchMessages: dispatchMessages,
             currentMessage: currentMessage,
           }}
         />

@@ -2,7 +2,7 @@ import SelectedChatHeader from "./selected-chat-header/SelectedChatHeader";
 import MessageList from "./message-list/MessageList";
 import SendMessageBox from "./send-message-box/SendMessageBox";
 import "./styles.css";
-import { User, UserMessage } from "@/types/common-types";
+import { User, UserMessage } from "../../constant/types/common-types";
 import {
   handleMessageActionTypes,
   OnActionTypes,
@@ -13,6 +13,7 @@ function SelectedChat({
   selectedUser,
   selectedUserMessages,
   onAction,
+  dispatchMessages,
 }: {
   isSpaciousMode: boolean;
   selectedUser: User;
@@ -23,6 +24,15 @@ function SelectedChat({
       | typeof OnActionTypes.DELETE_USER,
     payload: string | number
   ) => void;
+  dispatchMessages: React.Dispatch<{
+    type: keyof typeof handleMessageActionTypes;
+    payload: {
+      selectedUserId: string;
+      newMessageText?: string;
+      selectedMessageId?: number;
+      editedMessageText?: string;
+    };
+  }>;
 }) {
   return (
     <div className="SelectedChatSection">
@@ -31,24 +41,14 @@ function SelectedChat({
 
       <MessageList
         isSpaciousMode={isSpaciousMode}
+        selectedUserId={selectedUser.id}
         selectedUserMessages={selectedUserMessages}
-        onAction={
-          onAction as (
-            actionType:
-              | typeof OnActionTypes.EDIT_MESSAGE
-              | typeof OnActionTypes.DELETE_MESSAGE,
-            payload: number | [number, string]
-          ) => void
-        }
+        dispatchMessages={dispatchMessages}
       />
 
       <SendMessageBox
-        onAction={
-          onAction as (
-            actionType: typeof OnActionTypes.SEND_MESSAGE,
-            payload: string
-          ) => void
-        }
+        dispatchMessages={dispatchMessages}
+        selectedUserId={selectedUser.id}
       />
     </div>
   );
