@@ -13,6 +13,7 @@ import {
   handleUserActionTypes,
   OnActionTypes,
 } from "./constant/types/onAction-types";
+import { v4 as uuidv4 } from "uuid";
 
 function messagesReducer(
   messages: AllUserMessages,
@@ -113,7 +114,7 @@ function usersReducer(
 
     case handleUserActionTypes.ADD_NEW_USER:
       if (action.payload.newUserName) {
-        const newUserId = users.length > 0 ? users[users.length - 1].id + 1 : 0;
+        const newUserId = uuidv4();
         const newUser = {
           id: newUserId + "",
           name: action.payload.newUserName,
@@ -135,8 +136,6 @@ function App() {
   const [messages, dispatchMessages] = useReducer(messagesReducer, {});
   const [users, dispatchUsers] = useReducer(usersReducer, []);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  // const [messages, setMessages] = useState<AllUserMessages>({});
-  // const [users, setUsers] = useState<User[]>([]);
   const [isSpaciousMode, setIsSpaciousMode] = useState<boolean>(true);
 
   useEffect(() => {
