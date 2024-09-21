@@ -22,7 +22,7 @@ function messagesReducer(
     payload: {
       selectedUserId: string;
       newMessageText?: string;
-      selectedMessageId?: number;
+      selectedMessageId?: string;
       editedMessageText?: string;
       storedMessages?: AllUserMessages;
     };
@@ -37,11 +37,7 @@ function messagesReducer(
         const selectedUserMessageList =
           messages[action.payload.selectedUserId] ?? [];
         const timeStamp = new Date().toTimeString().split(" ")[0];
-        const messageId =
-          selectedUserMessageList.length > 0
-            ? selectedUserMessageList[selectedUserMessageList.length - 1].id + 1
-            : 0;
-
+        const messageId = uuidv4();
         return {
           ...messages,
           [action.payload.selectedUserId]: [

@@ -24,7 +24,7 @@ function MessageList({
     payload: {
       selectedUserId: string;
       newMessageText?: string;
-      selectedMessageId?: number;
+      selectedMessageId?: string;
       editedMessageText?: string;
       storedMessages?: AllUserMessages;
     };

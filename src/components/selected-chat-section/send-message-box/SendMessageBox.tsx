@@ -12,7 +12,7 @@ function SendMessageBox({
     payload: {
       selectedUserId: string;
       newMessageText?: string;
-      selectedMessageId?: number;
+      selectedMessageId?: string;
       editedMessageText?: string;
     };
   }>;
