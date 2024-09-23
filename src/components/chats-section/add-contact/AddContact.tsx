@@ -8,7 +8,9 @@ function AddContact({
 }: {
   onAction: (
     actionType: typeof OnActionTypes.ADD_NEW_USER,
-    payload: string
+    payload: {
+      [key: string]: string;
+    }
   ) => void;
 }) {
   const [isModalOpen, setModalOpen] = useState(false);

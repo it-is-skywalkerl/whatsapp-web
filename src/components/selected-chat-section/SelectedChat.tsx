@@ -19,10 +19,10 @@ function SelectedChat({
   selectedUser: User;
   selectedUserMessages: UserMessage[];
   onAction: (
-    actionType:
-      | keyof typeof handleMessageActionTypes
-      | typeof OnActionTypes.DELETE_USER,
-    payload: string | number
+    actionType: typeof OnActionTypes.DELETE_USER,
+    payload: {
+      [key: string]: number | string;
+    }
   ) => void;
   dispatchMessages: React.Dispatch<{
     type: keyof typeof handleMessageActionTypes;

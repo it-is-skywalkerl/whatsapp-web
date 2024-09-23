@@ -15,11 +15,15 @@ function Contacts({
   messages: AllUserMessages;
   onAction: (
     actionType: typeof OnActionTypes.SELECT_USER,
-    payload: string
+    payload: {
+      [key: string]: string;
+    }
   ) => void;
 }) {
   function handleClick(event: React.MouseEvent<HTMLDivElement>) {
-    onAction(OnActionTypes.SELECT_USER, event.currentTarget.id);
+    onAction(OnActionTypes.SELECT_USER, {
+      selectedUserId: event.currentTarget.id,
+    });
   }
 
   return (

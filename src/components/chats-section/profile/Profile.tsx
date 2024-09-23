@@ -16,7 +16,9 @@ function Profile({
   isSpaciousMode: boolean;
   onAction: (
     actionType: typeof OnActionTypes.TOGGLE_VIEW,
-    payload: string
+    payload: {
+      [key: string]: string;
+    }
   ) => void;
 }) {
   return (
@@ -31,7 +33,7 @@ function Profile({
           <NewChatIcon />
           <button
             className="ViewModeButton"
-            onClick={() => onAction(OnActionTypes.TOGGLE_VIEW, "")}
+            onClick={() => onAction(OnActionTypes.TOGGLE_VIEW, {})}
           >
             {isSpaciousMode ? "Compact Mode" : "Spacious Mode"}
           </button>

@@ -1,14 +1,11 @@
 import {
-  AllUserMessages,
+  messagesReducerPayloadType,
   UserMessage,
 } from "../../../constant/types/common-types";
 import "./styles.css";
 import { useEffect, useRef, useState } from "react";
 import Modal from "../../modal/Modal";
-import {
-  handleMessageActionTypes,
-  OnActionTypes,
-} from "../../../constant/types/onAction-types";
+import { handleMessageActionTypes } from "../../../constant/types/onAction-types";
 
 function MessageList({
   isSpaciousMode,
@@ -21,13 +18,7 @@ function MessageList({
   selectedUserMessages: UserMessage[];
   dispatchMessages: React.Dispatch<{
     type: keyof typeof handleMessageActionTypes;
-    payload: {
-      selectedUserId: string;
-      newMessageText?: string;
-      selectedMessageId?: string;
-      editedMessageText?: string;
-      storedMessages?: AllUserMessages;
-    };
+    payload: messagesReducerPayloadType;
   }>;
 }) {
   const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
@@ -92,7 +83,7 @@ function MessageList({
 
       {isEditModalOpen && (
         <Modal
-          modalType={OnActionTypes.EDIT_MESSAGE}
+          modalType={handleMessageActionTypes.EDIT_MESSAGE}
           headerText="Edit"
           dataObj={{
             currentMessage: currentMessage,
@@ -105,7 +96,7 @@ function MessageList({
       )}
       {isDeleteModalOpen && (
         <Modal
-          modalType={OnActionTypes.DELETE_MESSAGE}
+          modalType={handleMessageActionTypes.DELETE_MESSAGE}
           headerText="Are you sure you want to delete this message?"
           dataObj={{
             selectedUserId: selectedUserId,

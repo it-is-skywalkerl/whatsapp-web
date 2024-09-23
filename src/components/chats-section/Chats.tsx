@@ -23,7 +23,9 @@ function Chats({
       | typeof OnActionTypes.TOGGLE_VIEW
       | typeof OnActionTypes.SELECT_USER
       | typeof OnActionTypes.ADD_NEW_USER,
-    payload: string
+    payload: {
+      [key: string]: string;
+    }
   ) => void;
 }) {
   return (
@@ -33,7 +35,9 @@ function Chats({
         onAction={
           onAction as (
             actionType: typeof OnActionTypes.TOGGLE_VIEW,
-            payload: string
+            payload: {
+              [key: string]: string;
+            }
           ) => void
         }
       />
@@ -46,7 +50,9 @@ function Chats({
         onAction={
           onAction as (
             actionType: typeof OnActionTypes.SELECT_USER,
-            payload: string
+            payload: {
+              [key: string]: string;
+            }
           ) => void
         }
       />
@@ -54,7 +60,9 @@ function Chats({
         onAction={
           onAction as (
             actionType: typeof OnActionTypes.ADD_NEW_USER,
-            payload: string
+            payload: {
+              [key: string]: string;
+            }
           ) => void
         }
       />

@@ -1,6 +1,6 @@
 import {
   handleMessageActionTypes,
-  OnActionTypes,
+  handleUserActionTypes,
 } from "../../constant/types/onAction-types";
 import { useState } from "react";
 
@@ -9,7 +9,9 @@ function Modal({
   headerText,
   dataObj,
 }: {
-  modalType: keyof typeof OnActionTypes;
+  modalType:
+    | keyof typeof handleMessageActionTypes
+    | keyof typeof handleUserActionTypes;
   headerText: string;
   dataObj: { [key: string]: any };
 }) {
@@ -17,10 +19,10 @@ function Modal({
 
   function closeModal() {
     switch (modalType) {
-      case OnActionTypes.EDIT_MESSAGE:
-      case OnActionTypes.DELETE_MESSAGE:
-      case OnActionTypes.ADD_NEW_USER:
-      case OnActionTypes.DELETE_USER:
+      case handleMessageActionTypes.EDIT_MESSAGE:
+      case handleMessageActionTypes.DELETE_MESSAGE:
+      case handleUserActionTypes.ADD_NEW_USER:
+      case handleUserActionTypes.DELETE_USER:
         dataObj.setModalOpen(false);
         break;
 
@@ -31,7 +33,7 @@ function Modal({
 
   function yesFunction() {
     switch (modalType) {
-      case OnActionTypes.EDIT_MESSAGE:
+      case handleMessageActionTypes.EDIT_MESSAGE:
         dataObj.dispatchMessages({
           type: handleMessageActionTypes.EDIT_MESSAGE,
           payload: {
@@ -44,7 +46,7 @@ function Modal({
         dataObj.setCurrentMessage(null);
         break;
 
-      case OnActionTypes.DELETE_MESSAGE:
+      case handleMessageActionTypes.DELETE_MESSAGE:
         dataObj.dispatchMessages({
           type: handleMessageActionTypes.DELETE_MESSAGE,
           payload: {
@@ -55,13 +57,15 @@ function Modal({
         dataObj.setModalOpen(false);
         break;
 
-      case OnActionTypes.ADD_NEW_USER:
-        dataObj.onAction(OnActionTypes.ADD_NEW_USER, textAreaValue);
+      case handleUserActionTypes.ADD_NEW_USER:
+        dataObj.onAction(handleUserActionTypes.ADD_NEW_USER, {
+          newUserName: textAreaValue,
+        });
         dataObj.setModalOpen(false);
         break;
 
-      case OnActionTypes.DELETE_USER:
-        dataObj.onAction(OnActionTypes.DELETE_USER, "");
+      case handleUserActionTypes.DELETE_USER:
+        dataObj.onAction(handleUserActionTypes.DELETE_USER, {});
         dataObj.setModalOpen(false);
         break;
 
@@ -74,8 +78,8 @@ function Modal({
     <div className="Modal">
       <div className="ModalContent">
         <h2>{headerText}</h2>
-        {(modalType === OnActionTypes.EDIT_MESSAGE ||
-          modalType === OnActionTypes.ADD_NEW_USER) && (
+        {(modalType === handleMessageActionTypes.EDIT_MESSAGE ||
+          modalType === handleUserActionTypes.ADD_NEW_USER) && (
           <textarea
             value={textAreaValue}
             onChange={(e) => setTextAreaValue(e.target.value)}

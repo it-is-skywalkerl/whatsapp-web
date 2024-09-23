@@ -5,8 +5,10 @@ import DefaultUnselectedChatDisplay from "./components/default-unselected-chat-d
 import { useEffect, useReducer, useState } from "react";
 import {
   AllUserMessages,
+  messagesReducerPayloadType,
   User,
   UserMessage,
+  usersReducerPayloadType,
 } from "./constant/types/common-types";
 import {
   handleMessageActionTypes,
@@ -19,13 +21,7 @@ function messagesReducer(
   messages: AllUserMessages,
   action: {
     type: keyof typeof handleMessageActionTypes;
-    payload: {
-      selectedUserId: string;
-      newMessageText?: string;
-      selectedMessageId?: string;
-      editedMessageText?: string;
-      storedMessages?: AllUserMessages;
-    };
+    payload: messagesReducerPayloadType;
   }
 ): AllUserMessages {
   switch (action.type) {
@@ -97,11 +93,7 @@ function usersReducer(
   users: User[],
   action: {
     type: keyof typeof handleUserActionTypes;
-    payload: {
-      selectedUser?: User;
-      newUserName?: string;
-      storedUsers?: User[];
-    };
+    payload: usersReducerPayloadType;
   }
 ): User[] {
   switch (action.type) {
@@ -157,30 +149,32 @@ function App() {
     saveUsersToLocalStorage(users);
   }, [users]);
 
-  function handleUser(
-    actionType: keyof typeof handleUserActionTypes,
-    payload: string
+  function onAction(
+    actionType: keyof typeof OnActionTypes,
+    payload: {
+      [key: string]: string | number;
+    }
   ) {
     switch (actionType) {
-      case handleUserActionTypes.SELECT_USER:
+      case OnActionTypes.SELECT_USER:
         {
-          const USER = users.find((connection) => connection.id === payload);
+          const USER = users.find((user) => user.id === payload.selectedUserId);
           if (USER !== undefined) {
             setSelectedUser(USER);
           }
         }
         break;
 
-      case handleUserActionTypes.ADD_NEW_USER:
+      case OnActionTypes.ADD_NEW_USER:
         {
           dispatchUsers({
             type: handleUserActionTypes.ADD_NEW_USER,
-            payload: { newUserName: payload },
+            payload: { newUserName: payload.newUserName.toString() },
           });
         }
         break;
 
-      case handleUserActionTypes.DELETE_USER:
+      case OnActionTypes.DELETE_USER:
         if (selectedUser) {
           dispatchUsers({
             type: handleUserActionTypes.DELETE_USER,
@@ -192,20 +186,6 @@ function App() {
           });
           setSelectedUser(null);
         }
-        break;
-    }
-  }
-
-  function onAction(
-    actionType: keyof typeof OnActionTypes,
-    payload: string | number
-  ) {
-    switch (actionType) {
-      case OnActionTypes.SELECT_USER:
-      case OnActionTypes.ADD_NEW_USER:
-      case OnActionTypes.DELETE_USER:
-        payload = payload.toString();
-        handleUser(actionType, payload);
         break;
 
       case OnActionTypes.TOGGLE_VIEW:

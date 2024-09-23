@@ -12,7 +12,9 @@ function SelectedChatHeader({
   selectedUser: User;
   onAction: (
     actionType: typeof OnActionTypes.DELETE_USER,
-    payload: string | number
+    payload: {
+      [key: string]: number | string;
+    }
   ) => void;
 }) {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
