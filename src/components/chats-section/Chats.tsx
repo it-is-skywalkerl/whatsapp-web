@@ -10,13 +10,13 @@ import { OnActionTypes } from "@/constant/types/onAction-types";
 function Chats({
   isSpaciousMode,
   users,
-  selectedUser,
+  selectedUserId,
   messages,
   onAction,
 }: {
   isSpaciousMode: boolean;
   users: User[];
-  selectedUser: User | null;
+  selectedUserId: string | undefined;
   messages: AllUserMessages;
   onAction: (
     actionType:
@@ -46,7 +46,7 @@ function Chats({
       <Contacts
         isSpaciousMode={isSpaciousMode}
         users={users}
-        selectedUser={selectedUser}
+        selectedUserId={selectedUserId}
         messages={messages}
         onAction={
           onAction as (

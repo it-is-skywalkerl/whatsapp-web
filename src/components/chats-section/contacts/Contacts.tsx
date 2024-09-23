@@ -5,13 +5,13 @@ import { OnActionTypes } from "../../../constant/types/onAction-types";
 function Contacts({
   isSpaciousMode,
   users,
-  selectedUser,
+  selectedUserId,
   messages,
   onAction,
 }: {
   isSpaciousMode: boolean;
   users: User[];
-  selectedUser: User | null;
+  selectedUserId: string | undefined;
   messages: AllUserMessages;
   onAction: (
     actionType: typeof OnActionTypes.SELECT_USER,
@@ -33,9 +33,7 @@ function Contacts({
           key={contact.id}
           id={contact.id}
           className={
-            selectedUser?.id == contact.id
-              ? "Contact SelectedContact"
-              : "Contact"
+            selectedUserId == contact.id ? "Contact SelectedContact" : "Contact"
           }
           onClick={handleClick}
         >

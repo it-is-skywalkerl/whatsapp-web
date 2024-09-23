@@ -73,14 +73,21 @@ function Modal({
         <h2>{headerText}</h2>
         {(modalType === handleMessageActionTypes.EDIT_MESSAGE ||
           modalType === handleUserActionTypes.ADD_NEW_USER) && (
-          <textarea
-            value={textAreaValue}
-            onChange={(e) => setTextAreaValue(e.target.value)}
-          />
+          <>
+            <textarea
+              value={textAreaValue}
+              onChange={(e) => setTextAreaValue(e.target.value)}
+            />
+            {textAreaValue.trim() === "" && (
+              <p style={{ color: "red" }}>This field is required</p>
+            )}
+          </>
         )}
         <div className="ModalActions">
           <button onClick={closeModal}>Cancel</button>
-          <button onClick={yesFunction}>Yes</button>
+          <button onClick={yesFunction} disabled={textAreaValue.trim() === ""}>
+            Yes
+          </button>
         </div>
       </div>
     </div>

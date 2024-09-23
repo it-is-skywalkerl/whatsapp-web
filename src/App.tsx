@@ -209,7 +209,7 @@ function App() {
       <Chats
         isSpaciousMode={isSpaciousMode}
         users={users}
-        selectedUser={selectedUser}
+        selectedUserId={selectedUser?.id}
         messages={messages}
         onAction={onAction}
       />

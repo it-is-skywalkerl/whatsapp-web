@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AttachmentIcon, SendButtonIcon } from "../../../assets/icons/Icons";
 import "./styles.css";
 import { handleMessageActionTypes } from "../../../constant/types/onAction-types";
+import { messagesReducerPayloadType } from "@/constant/types/common-types";
 
 function SendMessageBox({
   dispatchMessages,
@@ -9,12 +10,7 @@ function SendMessageBox({
 }: {
   dispatchMessages: React.Dispatch<{
     type: keyof typeof handleMessageActionTypes;
-    payload: {
-      selectedUserId: string;
-      newMessageText?: string;
-      selectedMessageId?: string;
-      editedMessageText?: string;
-    };
+    payload: messagesReducerPayloadType;
   }>;
   selectedUserId: string;
 }) {

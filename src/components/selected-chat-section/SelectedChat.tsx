@@ -2,7 +2,11 @@ import SelectedChatHeader from "./selected-chat-header/SelectedChatHeader";
 import MessageList from "./message-list/MessageList";
 import SendMessageBox from "./send-message-box/SendMessageBox";
 import "./styles.css";
-import { User, UserMessage } from "../../constant/types/common-types";
+import {
+  messagesReducerPayloadType,
+  User,
+  UserMessage,
+} from "../../constant/types/common-types";
 import {
   handleMessageActionTypes,
   OnActionTypes,
@@ -28,12 +32,7 @@ function SelectedChat({
   ) => void;
   dispatchMessages: React.Dispatch<{
     type: keyof typeof handleMessageActionTypes;
-    payload: {
-      selectedUserId: string;
-      newMessageText?: string;
-      selectedMessageId?: string;
-      editedMessageText?: string;
-    };
+    payload: messagesReducerPayloadType;
   }>;
 }) {
   return (

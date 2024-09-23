@@ -19,7 +19,6 @@ export interface AllUserMessages {
 export interface usersReducerPayloadType {
   selectedUser?: User;
   newUserName?: string;
-  storedUsers?: User[];
 }
 
 export interface messagesReducerPayloadType {
@@ -27,7 +26,6 @@ export interface messagesReducerPayloadType {
   newMessageText?: string;
   selectedMessageId?: string;
   editedMessageText?: string;
-  storedMessages?: AllUserMessages;
 }
 
 export interface ModalDataObjType {
