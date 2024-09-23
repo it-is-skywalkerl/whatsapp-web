@@ -6,7 +6,6 @@ export const OnActionTypes = {
 } as const;
 
 export const handleMessageActionTypes = {
-  SYNC_WITH_LOCAL_STORAGE_MESSAGES: "SYNC_WITH_LOCAL_STORAGE_MESSAGES",
   SEND_MESSAGE: "SEND_MESSAGE",
   EDIT_MESSAGE: "EDIT_MESSAGE",
   DELETE_MESSAGE: "DELETE_MESSAGE",
@@ -15,7 +14,6 @@ export const handleMessageActionTypes = {
 } as const;
 
 export const handleUserActionTypes = {
-  SYNC_WITH_LOCAL_STORAGE_USERS: "SYNC_WITH_LOCAL_STORAGE_USERS",
   SELECT_USER: "SELECT_USER",
   ADD_NEW_USER: "ADD_NEW_USER",
   DELETE_USER: "DELETE_USER",

@@ -2,7 +2,7 @@ import "./App.css";
 import Chats from "./components/chats-section/Chats";
 import SelectedChat from "./components/selected-chat-section/SelectedChat";
 import DefaultUnselectedChatDisplay from "./components/default-unselected-chat-display/DefaultUnselectedChatDisplay";
-import { useEffect, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 import {
   AllUserMessages,
   messagesReducerPayloadType,
@@ -16,6 +16,12 @@ import {
   OnActionTypes,
 } from "./constant/types/onAction-types";
 import { v4 as uuidv4 } from "uuid";
+import {
+  getMessagesFromLocalStorage,
+  getUsersFromLocalStorage,
+  saveMessagesToLocalStorage,
+  saveUsersToLocalStorage,
+} from "./utils/localStorageUtils";
 
 function messagesReducer(
   messages: AllUserMessages,
@@ -24,17 +30,16 @@ function messagesReducer(
     payload: messagesReducerPayloadType;
   }
 ): AllUserMessages {
-  switch (action.type) {
-    case handleMessageActionTypes.SYNC_WITH_LOCAL_STORAGE_MESSAGES:
-      return action.payload.storedMessages ?? messages;
+  let updatedMessages = messages;
 
+  switch (action.type) {
     case handleMessageActionTypes.SEND_MESSAGE:
       if (action.payload.newMessageText) {
         const selectedUserMessageList =
           messages[action.payload.selectedUserId] ?? [];
         const timeStamp = new Date().toTimeString().split(" ")[0];
         const messageId = uuidv4();
-        return {
+        updatedMessages = {
           ...messages,
           [action.payload.selectedUserId]: [
             ...selectedUserMessageList,
@@ -42,51 +47,65 @@ function messagesReducer(
           ],
         };
       }
-      return messages;
+      break;
 
-    case handleMessageActionTypes.EDIT_MESSAGE: {
-      const selectedUserMessageList = messages[
-        action.payload.selectedUserId
-      ].map((message: UserMessage) =>
-        message.id === action.payload.selectedMessageId
-          ? { ...message, text: action.payload.editedMessageText ?? "" }
-          : message
-      );
-      return {
-        ...messages,
-        [action.payload.selectedUserId]: selectedUserMessageList,
-      };
-    }
+    case handleMessageActionTypes.EDIT_MESSAGE:
+      {
+        const selectedUserMessageList = messages[
+          action.payload.selectedUserId
+        ].map((message: UserMessage) =>
+          message.id === action.payload.selectedMessageId
+            ? { ...message, text: action.payload.editedMessageText ?? "" }
+            : message
+        );
+        updatedMessages = {
+          ...messages,
+          [action.payload.selectedUserId]: selectedUserMessageList,
+        };
+      }
+      break;
 
-    case handleMessageActionTypes.DELETE_MESSAGE: {
-      const selectedUserMessageList = messages[
-        action.payload.selectedUserId
-      ].filter(
-        (message: UserMessage) =>
-          message.id !== action.payload.selectedMessageId
-      );
-      return {
-        ...messages,
-        [action.payload.selectedUserId]: selectedUserMessageList,
-      };
-    }
+    case handleMessageActionTypes.DELETE_MESSAGE:
+      {
+        const selectedUserMessageList = messages[
+          action.payload.selectedUserId
+        ].filter(
+          (message: UserMessage) =>
+            message.id !== action.payload.selectedMessageId
+        );
+        updatedMessages = {
+          ...messages,
+          [action.payload.selectedUserId]: selectedUserMessageList,
+        };
+      }
+      break;
 
-    case handleMessageActionTypes.DELETE_USER_ALL_MESSAGES: {
-      return Object.entries(messages).reduce((acc, [key, value]) => {
-        if (key !== action.payload.selectedUserId) {
-          acc[key] = value;
-        }
-        return acc;
-      }, {} as AllUserMessages);
-    }
+    case handleMessageActionTypes.DELETE_USER_ALL_MESSAGES:
+      {
+        updatedMessages = Object.entries(messages).reduce(
+          (acc, [key, value]) => {
+            if (key !== action.payload.selectedUserId) {
+              acc[key] = value;
+            }
+            return acc;
+          },
+          {} as AllUserMessages
+        );
+      }
+      break;
 
-    case handleMessageActionTypes.ADD_NEW_USER_MESSAGES: {
-      return { ...messages, [action.payload.selectedUserId]: [] };
-    }
+    case handleMessageActionTypes.ADD_NEW_USER_MESSAGES:
+      {
+        updatedMessages = { ...messages, [action.payload.selectedUserId]: [] };
+      }
+      break;
 
     default:
-      return messages;
+      console.warn("Unhandled message action type");
   }
+
+  saveMessagesToLocalStorage(updatedMessages);
+  return updatedMessages;
 }
 
 function usersReducer(
@@ -96,10 +115,9 @@ function usersReducer(
     payload: usersReducerPayloadType;
   }
 ): User[] {
-  switch (action.type) {
-    case handleUserActionTypes.SYNC_WITH_LOCAL_STORAGE_USERS:
-      return action.payload.storedUsers ?? users;
+  let updatedUsers = users;
 
+  switch (action.type) {
     case handleUserActionTypes.ADD_NEW_USER:
       if (action.payload.newUserName) {
         const newUserId = uuidv4();
@@ -108,46 +126,35 @@ function usersReducer(
           name: action.payload.newUserName,
           profileImg: `https://ui-avatars.com/api/?name=${action.payload.newUserName}`,
         };
-        return [...users, newUser];
+        updatedUsers = [...users, newUser];
       }
-      return users;
+      break;
 
     case handleUserActionTypes.DELETE_USER:
-      return users.filter((user: User) => user !== action.payload.selectedUser);
+      updatedUsers = users.filter(
+        (user: User) => user !== action.payload.selectedUser
+      );
+      break;
 
     default:
-      return users;
+      console.warn("Unhandled user action type");
   }
+
+  saveUsersToLocalStorage(updatedUsers);
+  return updatedUsers;
 }
 
 function App() {
-  const [messages, dispatchMessages] = useReducer(messagesReducer, {});
-  const [users, dispatchUsers] = useReducer(usersReducer, []);
+  const [messages, dispatchMessages] = useReducer(
+    messagesReducer,
+    getMessagesFromLocalStorage()
+  );
+  const [users, dispatchUsers] = useReducer(
+    usersReducer,
+    getUsersFromLocalStorage()
+  );
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isSpaciousMode, setIsSpaciousMode] = useState<boolean>(true);
-
-  useEffect(() => {
-    const storedMessages = getMessagesFromLocalStorage();
-    const storedUsers = getUsersFromLocalStorage();
-    if (Object.keys(storedMessages).length > 0)
-      dispatchMessages({
-        type: handleMessageActionTypes.SYNC_WITH_LOCAL_STORAGE_MESSAGES,
-        payload: { selectedUserId: "", storedMessages: storedMessages },
-      });
-    if (Object.keys(storedUsers).length > 0)
-      dispatchUsers({
-        type: handleUserActionTypes.SYNC_WITH_LOCAL_STORAGE_USERS,
-        payload: { storedUsers: storedUsers },
-      });
-  }, []);
-
-  useEffect(() => {
-    saveMessagesToLocalStorage(messages);
-  }, [messages]);
-
-  useEffect(() => {
-    saveUsersToLocalStorage(users);
-  }, [users]);
 
   function onAction(
     actionType: keyof typeof OnActionTypes,
@@ -219,24 +226,6 @@ function App() {
       )}
     </div>
   );
-
-  function saveMessagesToLocalStorage(userMessages: AllUserMessages) {
-    localStorage.setItem("messages", JSON.stringify(userMessages));
-  }
-
-  function getMessagesFromLocalStorage(): AllUserMessages {
-    const savedMessages = localStorage.getItem("messages");
-    return savedMessages ? JSON.parse(savedMessages) : {};
-  }
-
-  function saveUsersToLocalStorage(users: User[]) {
-    localStorage.setItem("users", JSON.stringify(users));
-  }
-
-  function getUsersFromLocalStorage(): User[] {
-    const savedUsers = localStorage.getItem("users");
-    return savedUsers ? JSON.parse(savedUsers) : {};
-  }
 }
 
 export default App;
