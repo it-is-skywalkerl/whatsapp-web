@@ -1,3 +1,5 @@
+import { handleMessageActionTypes, OnActionTypes } from "./onAction-types";
+
 export interface User {
   id: string;
   name: string;
@@ -26,4 +28,23 @@ export interface messagesReducerPayloadType {
   selectedMessageId?: string;
   editedMessageText?: string;
   storedMessages?: AllUserMessages;
+}
+
+export interface ModalDataObjType {
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  dispatchMessages?: React.Dispatch<{
+    type: keyof typeof handleMessageActionTypes;
+    payload: messagesReducerPayloadType;
+  }>;
+  onAction?: (
+    actionType:
+      | typeof OnActionTypes.ADD_NEW_USER
+      | typeof OnActionTypes.DELETE_USER,
+    payload: {
+      [key: string]: string;
+    }
+  ) => void;
+  selectedUserId?: string;
+  currentMessage?: UserMessage;
+  setCurrentMessage?: React.Dispatch<React.SetStateAction<UserMessage | null>>;
 }

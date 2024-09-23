@@ -7,7 +7,9 @@ function AddContact({
   onAction,
 }: {
   onAction: (
-    actionType: typeof OnActionTypes.ADD_NEW_USER,
+    actionType:
+      | typeof OnActionTypes.ADD_NEW_USER
+      | typeof OnActionTypes.DELETE_USER,
     payload: {
       [key: string]: string;
     }

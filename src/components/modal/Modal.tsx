@@ -1,3 +1,4 @@
+import { ModalDataObjType } from "@/constant/types/common-types";
 import {
   handleMessageActionTypes,
   handleUserActionTypes,
@@ -13,59 +14,51 @@ function Modal({
     | keyof typeof handleMessageActionTypes
     | keyof typeof handleUserActionTypes;
   headerText: string;
-  dataObj: { [key: string]: any };
+  dataObj: ModalDataObjType;
 }) {
   const [textAreaValue, setTextAreaValue] = useState<string>("");
 
   function closeModal() {
-    switch (modalType) {
-      case handleMessageActionTypes.EDIT_MESSAGE:
-      case handleMessageActionTypes.DELETE_MESSAGE:
-      case handleUserActionTypes.ADD_NEW_USER:
-      case handleUserActionTypes.DELETE_USER:
-        dataObj.setModalOpen(false);
-        break;
-
-      default:
-        console.warn("Unhandled close modal case");
-    }
+    dataObj.setModalOpen(false);
   }
 
   function yesFunction() {
     switch (modalType) {
       case handleMessageActionTypes.EDIT_MESSAGE:
-        dataObj.dispatchMessages({
-          type: handleMessageActionTypes.EDIT_MESSAGE,
-          payload: {
-            selectedUserId: dataObj.selectedUserId,
-            selectedMessageId: dataObj.currentMessage.id,
-            editedMessageText: textAreaValue,
-          },
-        });
+        if (dataObj.selectedUserId)
+          dataObj.dispatchMessages?.({
+            type: handleMessageActionTypes.EDIT_MESSAGE,
+            payload: {
+              selectedUserId: dataObj.selectedUserId,
+              selectedMessageId: dataObj.currentMessage?.id,
+              editedMessageText: textAreaValue,
+            },
+          });
         dataObj.setModalOpen(false);
-        dataObj.setCurrentMessage(null);
+        dataObj.setCurrentMessage?.(null);
         break;
 
       case handleMessageActionTypes.DELETE_MESSAGE:
-        dataObj.dispatchMessages({
-          type: handleMessageActionTypes.DELETE_MESSAGE,
-          payload: {
-            selectedUserId: dataObj.selectedUserId,
-            selectedMessageId: dataObj.currentMessage.id,
-          },
-        });
+        if (dataObj.selectedUserId)
+          dataObj.dispatchMessages?.({
+            type: handleMessageActionTypes.DELETE_MESSAGE,
+            payload: {
+              selectedUserId: dataObj.selectedUserId,
+              selectedMessageId: dataObj.currentMessage?.id,
+            },
+          });
         dataObj.setModalOpen(false);
         break;
 
       case handleUserActionTypes.ADD_NEW_USER:
-        dataObj.onAction(handleUserActionTypes.ADD_NEW_USER, {
+        dataObj.onAction?.(handleUserActionTypes.ADD_NEW_USER, {
           newUserName: textAreaValue,
         });
         dataObj.setModalOpen(false);
         break;
 
       case handleUserActionTypes.DELETE_USER:
-        dataObj.onAction(handleUserActionTypes.DELETE_USER, {});
+        dataObj.onAction?.(handleUserActionTypes.DELETE_USER, {});
         dataObj.setModalOpen(false);
         break;
 

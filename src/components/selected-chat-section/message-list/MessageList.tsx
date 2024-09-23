@@ -81,7 +81,7 @@ function MessageList({
         <div ref={messagesEndRef} />
       </div>
 
-      {isEditModalOpen && (
+      {isEditModalOpen && currentMessage && (
         <Modal
           modalType={handleMessageActionTypes.EDIT_MESSAGE}
           headerText="Edit"
@@ -94,7 +94,7 @@ function MessageList({
           }}
         />
       )}
-      {isDeleteModalOpen && (
+      {isDeleteModalOpen && currentMessage && (
         <Modal
           modalType={handleMessageActionTypes.DELETE_MESSAGE}
           headerText="Are you sure you want to delete this message?"

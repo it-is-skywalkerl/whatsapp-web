@@ -22,7 +22,8 @@ function Chats({
     actionType:
       | typeof OnActionTypes.TOGGLE_VIEW
       | typeof OnActionTypes.SELECT_USER
-      | typeof OnActionTypes.ADD_NEW_USER,
+      | typeof OnActionTypes.ADD_NEW_USER
+      | typeof OnActionTypes.DELETE_USER,
     payload: {
       [key: string]: string;
     }
@@ -59,7 +60,9 @@ function Chats({
       <AddContact
         onAction={
           onAction as (
-            actionType: typeof OnActionTypes.ADD_NEW_USER,
+            actionType:
+              | typeof OnActionTypes.ADD_NEW_USER
+              | typeof OnActionTypes.DELETE_USER,
             payload: {
               [key: string]: string;
             }

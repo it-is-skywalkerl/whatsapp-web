@@ -152,7 +152,7 @@ function App() {
   function onAction(
     actionType: keyof typeof OnActionTypes,
     payload: {
-      [key: string]: string | number;
+      [key: string]: string;
     }
   ) {
     switch (actionType) {
