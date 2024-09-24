@@ -11,6 +11,5 @@
   position: absolute;
   inset: 0px;
   opacity: 0.05;
-  z-index: 1;
   background: url("/src/assets/images/bg-chat-room.png"), rgb(228, 220, 212);
 }

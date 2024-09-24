@@ -1,43 +1,80 @@
-import { UserMessage } from "@/types/common-types";
+import {
+  messagesReducerPayloadType,
+  UserMessage,
+} from "../../../constant/types/common-types";
 import "./styles.css";
+import { useEffect, useRef, useState } from "react";
+import Modal from "../../modal/Modal";
+import { handleMessageActionTypes } from "../../../constant/types/onAction-types";
+import Message from "./components/Message";
+import EncryptionMessage from "./components/EncryptionMessage";
 
 function MessageList({
+  isSpaciousMode,
+  selectedUserId,
   selectedUserMessages,
-  onAction,
+  dispatchMessages,
 }: {
+  isSpaciousMode: boolean;
+  selectedUserId: string;
   selectedUserMessages: UserMessage[];
-  onAction: (actionType: "DELETE_MESSAGE", payload: number) => void;
+  dispatchMessages: React.Dispatch<{
+    type: keyof typeof handleMessageActionTypes;
+    payload: messagesReducerPayloadType;
+  }>;
 }) {
-  function deleteMessage(id: number) {
-    onAction("DELETE_MESSAGE", id);
-  }
+  const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+  const [currentMessage, setCurrentMessage] = useState<UserMessage | null>(
+    null
+  );
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [selectedUserMessages]);
 
   return (
     <div className="MessagesSection">
-      <p className="EncryptionMessage">
-        <i className="bx bxs-lock-alt"></i>Messages are end-to-end encrypted. No
-        one outside of this chat, not even WhatsApp, can read or listen to them.
-        Click to learn more.
-      </p>
+      <EncryptionMessage />
       <div className="MessageList">
         {selectedUserMessages?.map((message: UserMessage) => (
-          <div key={message.id} className="Message">
-            <div className="DeleteDiv">
-              <button
-                className="DeleteButton"
-                onClick={() => deleteMessage(message.id)}
-              >
-                Delete
-              </button>
-            </div>
-
-            <div className="MessageText">
-              <div className="messageText">{message.text}</div>
-              <div className="TimeStamp">{message.timeStamp.slice(0, 5)}</div>
-            </div>
-          </div>
+          <Message
+            isSpaciousMode={isSpaciousMode}
+            message={message}
+            setCurrentMessage={setCurrentMessage}
+            setEditModalOpen={setEditModalOpen}
+            setDeleteModalOpen={setDeleteModalOpen}
+          />
         ))}
+        <div ref={messagesEndRef} />
       </div>
+
+      {isEditModalOpen && currentMessage && (
+        <Modal
+          modalType={handleMessageActionTypes.EDIT_MESSAGE}
+          headerText="Edit"
+          dataObj={{
+            currentMessage: currentMessage,
+            selectedUserId: selectedUserId,
+            setModalOpen: setEditModalOpen,
+            setCurrentMessage: setCurrentMessage,
+            dispatchMessages: dispatchMessages,
+          }}
+        />
+      )}
+      {isDeleteModalOpen && currentMessage && (
+        <Modal
+          modalType={handleMessageActionTypes.DELETE_MESSAGE}
+          headerText="Are you sure you want to delete this message?"
+          dataObj={{
+            selectedUserId: selectedUserId,
+            setModalOpen: setDeleteModalOpen,
+            dispatchMessages: dispatchMessages,
+            currentMessage: currentMessage,
+          }}
+        />
+      )}
     </div>
   );
 }
