@@ -17,6 +17,9 @@ function Modal({
   dataObj: ModalDataObjType;
 }) {
   const [textAreaValue, setTextAreaValue] = useState<string>("");
+  const isTextAreaVisible =
+    modalType === handleMessageActionTypes.EDIT_MESSAGE ||
+    modalType === handleUserActionTypes.ADD_NEW_USER;
 
   function closeModal() {
     dataObj.setModalOpen(false);
@@ -71,8 +74,7 @@ function Modal({
     <div className="Modal">
       <div className="ModalContent">
         <h2>{headerText}</h2>
-        {(modalType === handleMessageActionTypes.EDIT_MESSAGE ||
-          modalType === handleUserActionTypes.ADD_NEW_USER) && (
+        {isTextAreaVisible && (
           <>
             <textarea
               value={textAreaValue}
@@ -85,7 +87,10 @@ function Modal({
         )}
         <div className="ModalActions">
           <button onClick={closeModal}>Cancel</button>
-          <button onClick={yesFunction} disabled={textAreaValue.trim() === ""}>
+          <button
+            onClick={yesFunction}
+            disabled={isTextAreaVisible && textAreaValue.trim() === ""}
+          >
             Yes
           </button>
         </div>
