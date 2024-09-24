@@ -1,19 +1,29 @@
-import { AllUserMessages, User } from "@/types/common-types";
+import { AllUserMessages, User } from "../../../constant/types/common-types";
 import "./styles.css";
+import { OnActionTypes } from "../../../constant/types/onAction-types";
 
 function Contacts({
+  isSpaciousMode,
   users,
-  selectedUser,
+  selectedUserId,
   messages,
   onAction,
 }: {
+  isSpaciousMode: boolean;
   users: User[];
-  selectedUser: User | null;
+  selectedUserId: string | undefined;
   messages: AllUserMessages;
-  onAction: (actionType: "SELECT_USER", payload: string) => void;
+  onAction: (
+    actionType: typeof OnActionTypes.SELECT_USER,
+    payload: {
+      [key: string]: string;
+    }
+  ) => void;
 }) {
   function handleClick(event: React.MouseEvent<HTMLDivElement>) {
-    onAction("SELECT_USER", event.currentTarget.id);
+    onAction(OnActionTypes.SELECT_USER, {
+      selectedUserId: event.currentTarget.id,
+    });
   }
 
   return (
@@ -23,9 +33,7 @@ function Contacts({
           key={contact.id}
           id={contact.id}
           className={
-            selectedUser?.id == contact.id
-              ? "Contact SelectedContact"
-              : "Contact"
+            selectedUserId == contact.id ? "Contact SelectedContact" : "Contact"
           }
           onClick={handleClick}
         >
@@ -36,15 +44,13 @@ function Contacts({
             <div className="ProfileName">
               <h2>{contact.name}</h2>
             </div>
-            {messages[contact.id].length>0 && (
-              <>
-                <div className="LatestMessage">
+            {messages[contact.id]?.length > 0 && isSpaciousMode && (
+              <div className="LatestMessage">
+                {messages[contact.id][messages[contact.id].length - 1].text}
+                <div className="Tooltip">
                   {messages[contact.id][messages[contact.id].length - 1].text}
-                  <div className="Tooltip">
-                    {messages[contact.id][messages[contact.id].length - 1].text}
-                  </div>
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>
