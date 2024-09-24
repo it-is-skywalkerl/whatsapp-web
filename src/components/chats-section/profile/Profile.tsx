@@ -1,7 +1,7 @@
+import { OnActionTypes } from "../../../constant/types/onAction-types";
 import {
   DarkModeIcon,
   NoNotificationIcon,
-  MoreOptionsIcon,
   NewChatIcon,
   OpenStatusIcon,
   CloseIcon,
@@ -9,7 +9,18 @@ import {
 
 import "./styles.css";
 
-function Profile() {
+function Profile({
+  isSpaciousMode,
+  onAction,
+}: {
+  isSpaciousMode: boolean;
+  onAction: (
+    actionType: typeof OnActionTypes.TOGGLE_VIEW,
+    payload: {
+      [key: string]: string;
+    }
+  ) => void;
+}) {
   return (
     <div>
       <div className="ProfileOuter">
@@ -20,7 +31,12 @@ function Profile() {
           <DarkModeIcon />
           <OpenStatusIcon />
           <NewChatIcon />
-          <MoreOptionsIcon />
+          <button
+            className="ViewModeButton"
+            onClick={() => onAction(OnActionTypes.TOGGLE_VIEW, {})}
+          >
+            {isSpaciousMode ? "Compact Mode" : "Spacious Mode"}
+          </button>
         </div>
       </div>
       <div className="ImportContactsNotification">
