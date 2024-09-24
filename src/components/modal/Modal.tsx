@@ -21,10 +21,6 @@ function Modal({
     modalType === handleMessageActionTypes.EDIT_MESSAGE ||
     modalType === handleUserActionTypes.ADD_NEW_USER;
 
-  function closeModal() {
-    dataObj.setModalOpen(false);
-  }
-
   function yesFunction() {
     switch (modalType) {
       case handleMessageActionTypes.EDIT_MESSAGE:
@@ -86,7 +82,13 @@ function Modal({
           </>
         )}
         <div className="ModalActions">
-          <button onClick={closeModal}>Cancel</button>
+          <button
+            onClick={() => {
+              dataObj.setModalOpen(false);
+            }}
+          >
+            Cancel
+          </button>
           <button
             onClick={yesFunction}
             disabled={isTextAreaVisible && textAreaValue.trim() === ""}

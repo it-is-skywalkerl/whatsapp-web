@@ -8,8 +8,9 @@ import {
 } from "../../../assets/icons/Icons";
 
 import "./styles.css";
+import { memo } from "react";
 
-function Profile({
+const Profile = memo(function Profile({
   isSpaciousMode,
   onAction,
 }: {
@@ -56,6 +57,6 @@ function Profile({
       </div>
     </div>
   );
-}
+});
 
 export default Profile;

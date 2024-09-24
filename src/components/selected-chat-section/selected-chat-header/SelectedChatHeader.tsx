@@ -2,10 +2,10 @@ import { User } from "../../../constant/types/common-types";
 import "./styles.css";
 import { DeleteIcon } from "../../../assets/icons/Icons";
 import Modal from "../../modal/Modal";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { OnActionTypes } from "../../../constant/types/onAction-types";
 
-function SelectedChatHeader({
+const SelectedChatHeader = memo(function SelectedChatHeader({
   selectedUser,
   onAction,
 }: {
@@ -45,6 +45,6 @@ function SelectedChatHeader({
       )}
     </div>
   );
-}
+});
 
 export default SelectedChatHeader;

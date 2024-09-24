@@ -1,6 +1,7 @@
 import { AllUserMessages, User } from "../../../constant/types/common-types";
 import "./styles.css";
 import { OnActionTypes } from "../../../constant/types/onAction-types";
+import Contact from "./components/Contact";
 
 function Contacts({
   isSpaciousMode,
@@ -20,40 +21,19 @@ function Contacts({
     }
   ) => void;
 }) {
-  function handleClick(event: React.MouseEvent<HTMLDivElement>) {
-    onAction(OnActionTypes.SELECT_USER, {
-      selectedUserId: event.currentTarget.id,
-    });
-  }
-
   return (
     <div>
       {users.map((contact) => (
-        <div
+        <Contact
           key={contact.id}
-          id={contact.id}
-          className={
-            selectedUserId == contact.id ? "Contact SelectedContact" : "Contact"
+          isSpaciousMode={isSpaciousMode}
+          contact={contact}
+          selectedUserId={selectedUserId}
+          latestMessage={
+            messages[contact.id]?.[messages[contact.id].length - 1]?.text
           }
-          onClick={handleClick}
-        >
-          <div className="ProfilePhoto">
-            <img src={contact.profileImg} alt="" />
-          </div>
-          <div className="NameAndLatestMessageDiv">
-            <div className="ProfileName">
-              <h2>{contact.name}</h2>
-            </div>
-            {messages[contact.id]?.length > 0 && isSpaciousMode && (
-              <div className="LatestMessage">
-                {messages[contact.id][messages[contact.id].length - 1].text}
-                <div className="Tooltip">
-                  {messages[contact.id][messages[contact.id].length - 1].text}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+          onAction={onAction}
+        />
       ))}
     </div>
   );
