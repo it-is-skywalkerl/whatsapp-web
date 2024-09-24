@@ -1,43 +1,38 @@
 import { useState } from "react";
 import "./styles.css";
+import Modal from "../../modal/Modal";
+import { OnActionTypes } from "../../../constant/types/onAction-types";
 
 function AddContact({
   onAction,
 }: {
-  onAction: (actionType: "ADD_NEW_USER", payload: string) => void;
+  onAction: (
+    actionType:
+      | typeof OnActionTypes.ADD_NEW_USER
+      | typeof OnActionTypes.DELETE_USER,
+    payload: {
+      [key: string]: string;
+    }
+  ) => void;
 }) {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [contactName, setcontactName] = useState("");
 
   function openContactModal() {
     setModalOpen(true);
   }
 
-  function closeContactModal() {
-    setModalOpen(false);
-  }
-
-  function startNewChat() {
-    onAction("ADD_NEW_USER", contactName);
-    setcontactName("");
-    setModalOpen(false);
-  }
   return (
     <div>
       <button onClick={openContactModal}>Start new chat</button>
       {isModalOpen && (
-        <div className="Modal">
-          <div className="ModalContent">
-            <textarea
-              value={contactName}
-              onChange={(e) => setcontactName(e.target.value)} // Update state with new text
-            />
-            <div className="ModalActions">
-              <button onClick={startNewChat}>Start new chat</button>
-              <button onClick={closeContactModal}>Cancel</button>
-            </div>
-          </div>
-        </div>
+        <Modal
+          modalType={OnActionTypes.ADD_NEW_USER}
+          headerText="Start new chat"
+          dataObj={{
+            onAction: onAction,
+            setModalOpen: setModalOpen,
+          }}
+        />
       )}
     </div>
   );

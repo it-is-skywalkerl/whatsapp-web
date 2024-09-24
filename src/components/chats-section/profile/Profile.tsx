@@ -1,3 +1,4 @@
+import { OnActionTypes } from "../../../constant/types/onAction-types";
 import {
   DarkModeIcon,
   NoNotificationIcon,
@@ -13,7 +14,12 @@ function Profile({
   onAction,
 }: {
   isSpaciousMode: boolean;
-  onAction: (actionType: "TOGGLE_VIEW", payload: string) => void;
+  onAction: (
+    actionType: typeof OnActionTypes.TOGGLE_VIEW,
+    payload: {
+      [key: string]: string;
+    }
+  ) => void;
 }) {
   return (
     <div>
@@ -27,7 +33,7 @@ function Profile({
           <NewChatIcon />
           <button
             className="ViewModeButton"
-            onClick={() => onAction("TOGGLE_VIEW", "")}
+            onClick={() => onAction(OnActionTypes.TOGGLE_VIEW, {})}
           >
             {isSpaciousMode ? "Compact Mode" : "Spacious Mode"}
           </button>
