@@ -4,6 +4,8 @@ import {
   handleUserActionTypes,
 } from "../../constant/types/onAction-types";
 import { useState } from "react";
+import "./styles.css";
+import { createPortal } from "react-dom";
 
 function Modal({
   modalType,
@@ -66,7 +68,7 @@ function Modal({
     }
   }
 
-  return (
+  return createPortal(
     <div className="Modal">
       <div className="ModalContent">
         <h2>{headerText}</h2>
@@ -97,7 +99,8 @@ function Modal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
