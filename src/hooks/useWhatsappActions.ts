@@ -10,7 +10,7 @@ import {
 } from "../utils/localStorageUtils";
 import { messagesReducer } from "../utils/messagesReducer";
 import { usersReducer } from "../utils/usersReducer";
-import { useReducer, useState } from "react";
+import { useCallback, useReducer, useState } from "react";
 
 export const useWhatsappActions = () => {
   const [messages, dispatchMessages] = useReducer(
@@ -24,53 +24,58 @@ export const useWhatsappActions = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isSpaciousMode, setIsSpaciousMode] = useState<boolean>(true);
 
-  const onAction = (
-    actionType: keyof typeof OnActionTypes,
-    payload: {
-      [key: string]: string;
-    }
-  ) => {
-    switch (actionType) {
-      case OnActionTypes.SELECT_USER:
-        {
-          const USER = users.find((user) => user.id === payload.selectedUserId);
-          if (USER !== undefined) {
-            setSelectedUser(USER);
+  const onAction = useCallback(
+    (
+      actionType: keyof typeof OnActionTypes,
+      payload: {
+        [key: string]: string;
+      }
+    ) => {
+      switch (actionType) {
+        case OnActionTypes.SELECT_USER:
+          {
+            const USER = users.find(
+              (user) => user.id === payload.selectedUserId
+            );
+            if (USER !== undefined) {
+              setSelectedUser(USER);
+            }
           }
-        }
-        break;
+          break;
 
-      case OnActionTypes.ADD_NEW_USER:
-        {
-          dispatchUsers({
-            type: handleUserActionTypes.ADD_NEW_USER,
-            payload: { newUserName: payload.newUserName.toString() },
-          });
-        }
-        break;
+        case OnActionTypes.ADD_NEW_USER:
+          {
+            dispatchUsers({
+              type: handleUserActionTypes.ADD_NEW_USER,
+              payload: { newUserName: payload.newUserName.toString() },
+            });
+          }
+          break;
 
-      case OnActionTypes.DELETE_USER:
-        if (selectedUser) {
-          dispatchUsers({
-            type: handleUserActionTypes.DELETE_USER,
-            payload: { selectedUser: selectedUser },
-          });
-          dispatchMessages({
-            type: handleMessageActionTypes.DELETE_USER_ALL_MESSAGES,
-            payload: { selectedUserId: selectedUser.id },
-          });
-          setSelectedUser(null);
-        }
-        break;
+        case OnActionTypes.DELETE_USER:
+          if (selectedUser) {
+            dispatchUsers({
+              type: handleUserActionTypes.DELETE_USER,
+              payload: { selectedUser: selectedUser },
+            });
+            dispatchMessages({
+              type: handleMessageActionTypes.DELETE_USER_ALL_MESSAGES,
+              payload: { selectedUserId: selectedUser.id },
+            });
+            setSelectedUser(null);
+          }
+          break;
 
-      case OnActionTypes.TOGGLE_VIEW:
-        setIsSpaciousMode(!isSpaciousMode);
-        break;
+        case OnActionTypes.TOGGLE_VIEW:
+          setIsSpaciousMode(!isSpaciousMode);
+          break;
 
-      default:
-        console.warn(`Unhandled action type: ${actionType}`);
-    }
-  };
+        default:
+          console.warn(`Unhandled action type: ${actionType}`);
+      }
+    },
+    [isSpaciousMode, selectedUser, users]
+  );
 
   return {
     messages,

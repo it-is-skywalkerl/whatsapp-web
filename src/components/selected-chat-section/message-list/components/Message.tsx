@@ -1,18 +1,31 @@
-import { UserMessage } from "@/constant/types/common-types";
+import Modal from "../../../../components/modal/Modal";
+import {
+  messagesReducerPayloadType,
+  UserMessage,
+} from "../../../../constant/types/common-types";
+import { handleMessageActionTypes } from "../../../../constant/types/onAction-types";
+import { memo, useState } from "react";
 
-function Message({
+const Message = memo(function Message({
   isSpaciousMode,
   message,
-  setCurrentMessage,
-  setEditModalOpen,
-  setDeleteModalOpen,
+  selectedUserId,
+  dispatchMessages,
 }: {
   isSpaciousMode: boolean;
   message: UserMessage;
-  setCurrentMessage: React.Dispatch<React.SetStateAction<UserMessage | null>>;
-  setEditModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setDeleteModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedUserId: string;
+  dispatchMessages: React.Dispatch<{
+    type: keyof typeof handleMessageActionTypes;
+    payload: messagesReducerPayloadType;
+  }>;
 }) {
+  const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+  const [currentMessage, setCurrentMessage] = useState<UserMessage | null>(
+    null
+  );
+
   function openEditModal(message: UserMessage) {
     setCurrentMessage(message);
     setEditModalOpen(true);
@@ -22,6 +35,7 @@ function Message({
     setCurrentMessage(message);
     setDeleteModalOpen(true);
   }
+
   return (
     <div key={message.id} className="Message">
       <div className="MessageOptions">
@@ -45,8 +59,33 @@ function Message({
           <div className="TimeStamp">{message.timeStamp.slice(0, 5)}</div>
         )}
       </div>
+      {isEditModalOpen && currentMessage && (
+        <Modal
+          modalType={handleMessageActionTypes.EDIT_MESSAGE}
+          headerText="Edit"
+          dataObj={{
+            currentMessage: currentMessage,
+            selectedUserId: selectedUserId,
+            setModalOpen: setEditModalOpen,
+            setCurrentMessage: setCurrentMessage,
+            dispatchMessages: dispatchMessages,
+          }}
+        />
+      )}
+      {isDeleteModalOpen && currentMessage && (
+        <Modal
+          modalType={handleMessageActionTypes.DELETE_MESSAGE}
+          headerText="Are you sure you want to delete this message?"
+          dataObj={{
+            selectedUserId: selectedUserId,
+            setModalOpen: setDeleteModalOpen,
+            dispatchMessages: dispatchMessages,
+            currentMessage: currentMessage,
+          }}
+        />
+      )}
     </div>
   );
-}
+});
 
 export default Message;
