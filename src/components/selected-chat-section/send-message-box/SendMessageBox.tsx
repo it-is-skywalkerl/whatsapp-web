@@ -4,7 +4,7 @@ import "./styles.css";
 import { handleMessageActionTypes } from "../../../constant/types/onAction-types";
 import { messagesReducerPayloadType } from "@/constant/types/common-types";
 
-function SendMessageBox({
+const SendMessageBox = ({
   dispatchMessages,
   selectedUserId,
 }: {
@@ -13,7 +13,7 @@ function SendMessageBox({
     payload: messagesReducerPayloadType;
   }>;
   selectedUserId: string;
-}) {
+}) => {
   const [inputMessage, setInputMessage] = useState<string>("");
 
   function sendMessage() {
@@ -42,12 +42,12 @@ function SendMessageBox({
           onChange={(event) => setInputMessage(event.target.value)}
           onKeyDown={handleKeyDown}
         />
-        <button className="SendButton" onClick={sendMessage}>
+        <button className="SendButton" aria-label="Send" onClick={sendMessage}>
           <SendButtonIcon />
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default SendMessageBox;
