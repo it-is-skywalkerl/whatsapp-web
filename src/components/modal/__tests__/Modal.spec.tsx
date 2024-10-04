@@ -175,7 +175,7 @@ describe("Modal Component", () => {
     expect(baseDataObj.setModalOpen).toHaveBeenCalledWith(false);
   });
 
-  test("displays error message when textarea is empty and Yes is clicked", () => {
+  test("displays error message when textarea is empty and Yes is clicked", async () => {
     render(
       <Modal
         modalType={handleUserActionTypes.ADD_NEW_USER}
@@ -185,7 +185,7 @@ describe("Modal Component", () => {
     );
 
     const yesButton = screen.getByText("Yes");
-    userEvent.click(yesButton);
+    await userEvent.click(yesButton);
 
     expect(screen.getByText("This field is required")).toBeInTheDocument();
   });
